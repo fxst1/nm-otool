@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   otool.c                                            :+:      :+:    :+:   */
+/*   nm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 10:57:17 by fxst1            ###   ########.fr       */
+/*   Created: 2018/03/12 10:58:08 by fxst1             #+#    #+#             */
+/*   Updated: 2018/03/12 11:40:33 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		main(int argc, char **argv)
+#ifndef NM_H
+# define NM_H
+# include <binary.h>
+typedef struct		s_nm
 {
-	return (0);
-	(void)argc;
-	(void)argv;
-}
+	char			*filename;
+	t_binary		bin;
+}					t_nm;
+
+#endif
