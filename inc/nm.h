@@ -13,6 +13,7 @@
 #ifndef NM_H
 # define NM_H
 # include <binary.h>
+
 typedef struct		s_nm
 {
 	char			*filename;

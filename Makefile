@@ -42,3 +42,5 @@ fclean:
 	@rm -rf $(OBJDIR)
 	@rm -rf $(NM)
 	@rm -rf $(OTOOL)
+
+re: fclean all
