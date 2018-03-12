@@ -1,4 +1,0 @@
-echo(function (v)
-{
-	tab = [v];
-}(123)[0]);

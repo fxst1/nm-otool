@@ -1,2 +1,0 @@
-complex = 2 i;
-complex = complex * i;
