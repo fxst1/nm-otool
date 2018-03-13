@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -g
 INC = -I inc/
 
 OBJDIR = ./obj/
