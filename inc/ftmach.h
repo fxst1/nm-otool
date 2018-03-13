@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/13 13:03:01 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 13:35:35 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 #  define FAT_CIGAM 0xBEBAFECAu
 #  define FAT_MAGIC_64 0xCAFEBABFu
 #  define FAT_CIGAM_64 0xBFBAFECAu
+#  define LC_SEGMENT 0x1
+#  define LC_SYMTAB 0x2
+#  define LC_SEGMENT_64 0x19
+#  define LC_DYLD_INFO_ONLY 0x7FFFFFDE
 # endif
-# define LC_SEGMENT 0x1
-# define LC_SYMTAB 0x2
-# define LC_SEGMENT_64 0x19
-# define LC_DYLD_INFO_ONLY 0x7FFFFFDE
 
 typedef struct				s_mach32_section
 {

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/13 13:28:16 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 13:36:13 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void			mach_print_symbols_64(uint8_t *buf, off_t offset, t_symtab_command
 			buf += 2;
 			continue ;
 		}
-		printf("0x%08lx %s\n", offset, buf);
+		printf("0x%08x %s\n", (uint32_t)offset, buf);
 		offset += ft_strlen((char*)buf) + 1;
 		buf += ft_strlen((char*)buf) + 1;
 		i++;
