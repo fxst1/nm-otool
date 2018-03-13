@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 16:38:34 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 16:38:34 by fxst1            ###   ########.fr       */
+/*   Created: 2014/07/05 09:53:57 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/03/12 16:50:40 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-void		ft_putstr_fd(const char *s, const int fd)
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	write(fd, s, ft_strlen(s));
+	while (s1 && s2 && *s1 == *s2 && *s1)
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

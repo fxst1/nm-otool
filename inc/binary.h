@@ -6,12 +6,13 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 11:29:26 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 09:36:34 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BINARY_H
 # define BINARY_H
+# include <libft.h>
 # include <os.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,18 +33,23 @@
 # ifndef MAP_ANONYMOUS
 #  define MAP_ANONYMOUS MAP_ANON
 # endif
+
+# define ELF_MAGIC_32 0x4c46457f
+# define ELF_MAGIC_64 ELF_MAGIC_32
 # define TYPE_ID_MACH32 1
 # define TYPE_ID_MACH64 2
+# define TYPE_ID_ELF64 3
+# define TYPE_ID_ELF32 4
 # include <ftelf.h>
 # include <ftmach.h>
-
 typedef struct stat	t_stat;
 
 typedef union		u_binary_type
 {
 	t_mach64		mach64;
 	t_mach32		mach32;
-	t_elf_header	elf;
+	t_elf64			elf64;
+	t_elf32			elf32;
 }					t_binary_type;
 
 typedef struct		s_binary
@@ -55,13 +61,23 @@ typedef struct		s_binary
 	size_t			size;
 }					t_binary;
 
+typedef struct		s_section_info
+{
+	size_t			size;
+	off_t			offset;
+}					t_section_info;
+
 int					binary_read(const char *filename, t_binary *h);
 int					mach_read_32(t_binary *h);
+int					elf_read_32(t_binary *h);
 int					mach_read_64(t_binary *h);
+int					elf_read_64(t_binary *h);
 
-void				ft_memcpy(void *dst, void *src, size_t len);
-void				ft_bzero(void *dst, size_t len);
-size_t				ft_strlen(const char *s);
-void				ft_putstr_fd(const char *s, const int fd);
+void				get_segment_section(t_binary *bin, char *segname,
+										char *sectname, t_section_info *sect);
+void				mach_get_section_32(t_mach32 data, char *segname,
+										char *sectname, t_section_info *sect);
+void				mach_get_section_64(t_mach64 data, char *segname,
+										char *sectname, t_section_info *sect);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 10:57:17 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 12:37:31 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void		usage(void)
 {
-	ft_putstr_fd("Usage: otool [-ht] <object file>\n", STDOUT_FILENO);
+	ft_putstr_fd("Usage: otool [-hlt] <object file>\n", STDOUT_FILENO);
 }
 
 static int		parse_option(t_otool *data, char *opt)
@@ -44,6 +44,7 @@ static void		otool_process(t_otool *data)
 		otool_header(data);
 	if (data->opts & SHOW_TEXT || data->opts == 0)
 		otool_text(data);
+	free(data->bin.buffer);
 }
 
 int				main(int argc, char **argv)

@@ -3,6 +3,7 @@
 # include <binary.h>
 # define SHOW_HEADER 1
 # define SHOW_TEXT 2
+# define SHOW_SEGMENT 3
 
 typedef struct		s_otool
 {

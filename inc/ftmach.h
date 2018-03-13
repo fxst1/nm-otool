@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 11:09:55 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 13:03:01 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,40 @@
 #  define FAT_MAGIC_64 0xCAFEBABFu
 #  define FAT_CIGAM_64 0xBFBAFECAu
 # endif
+# define LC_SEGMENT 0x1
+# define LC_SYMTAB 0x2
+# define LC_SEGMENT_64 0x19
+# define LC_DYLD_INFO_ONLY 0x7FFFFFDE
+
+typedef struct				s_mach32_section
+{
+	char					sectname[16];
+	char					segname[16];
+	uint32_t				addr;
+	uint32_t				size;
+	uint32_t				offset;
+	uint32_t				align;
+	uint32_t				reloff;
+	uint32_t				nreloc;
+	uint32_t				flags;
+	uint32_t				reserved1;
+	uint32_t				reserved2;
+}							t_mach32_section;
+
+typedef struct				s_mach64_section
+{
+	char					sectname[16];
+	char					segname[16];
+	uint64_t				addr;
+	uint64_t				size;
+	uint32_t				offset;
+	uint32_t				align;
+	uint32_t				reloff;
+	uint32_t				nreloc;
+	uint32_t				flags;
+	uint32_t				reserved1;
+	uint32_t				reserved2;
+}							t_mach64_section;
 
 typedef struct				s_mach32_header
 {
@@ -48,6 +82,7 @@ typedef struct				s_segment32_command
 	uint32_t				initprot;
 	uint32_t				nsects;
 	uint32_t				flags;
+	t_mach64_section		*sections;
 }							t_segment32_command;
 
 typedef struct				s_mach64_header
@@ -59,6 +94,7 @@ typedef struct				s_mach64_header
 	uint32_t				ncmds;
 	uint32_t				sizeofcmds;
 	uint32_t				flags;
+	uint32_t				reserved;
 }							t_mach64_header;
 
 typedef struct				s_segment64_command
@@ -74,7 +110,18 @@ typedef struct				s_segment64_command
 	uint32_t				initprot;
 	uint32_t				nsects;
 	uint32_t				flags;
+	t_mach64_section		*sections;
 }							t_segment64_command;
+
+typedef struct				s_symtab_command
+{
+	uint32_t				cmd;
+	uint32_t				cmdsize;
+	uint32_t				symoff;
+	uint32_t				nsyms;
+	uint32_t				stroff;
+	uint32_t				strsize;
+}							t_symtab_command;
 
 typedef struct				s_mach32
 {
@@ -89,5 +136,11 @@ typedef struct				s_mach64
 	t_mach64_header			header;
 	t_segment64_command		*cmds;
 }							t_mach64;
+
+typedef struct				s_load_command
+{
+	uint32_t				cmd;
+	uint32_t				cmdsize;
+}							t_load_command;
 
 #endif

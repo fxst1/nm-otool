@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   elf_read_64.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 16:38:34 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 16:38:34 by fxst1            ###   ########.fr       */
+/*   Created: 2018/03/12 10:57:32 by fxst1             #+#    #+#             */
+/*   Updated: 2018/03/12 16:12:21 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <binary.h>
 
-void		ft_putstr_fd(const char *s, const int fd)
+int			elf_read_64(t_binary *h)
 {
-	write(fd, s, ft_strlen(s));
+	return (0);
+	(void)h;
 }
