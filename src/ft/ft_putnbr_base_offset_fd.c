@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 20:51:22 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/03/14 10:55:07 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 13:50:01 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static size_t 	getoffset(int nb, char *base, size_t *n)
 	return (*n);
 }
 
-void			ft_putnbr_base_offset_fd(int nb, char *base, size_t offset, int fd)
+void			ft_putnbr_base_offset_fd(int nb, char *base, size_t offset,
+											int fd)
 {
 	size_t		tmp;
 
