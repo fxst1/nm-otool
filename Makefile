@@ -6,11 +6,11 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2018/03/13 13:58:10 by fxst1            ###   ########.fr        #
+#    Updated: 2018/03/14 11:40:49 by fxst1            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 INC = -I inc/
 
 OBJDIR = ./obj/

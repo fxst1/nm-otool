@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 10:26:23 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 11:39:06 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ static void			mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
 	}
 }
 
-static size_t				get_size(t_segment64_command *cmd)
+static size_t				get_size(t_binary *bin, t_segment64_command *cmd)
 {
 	t_symtab_command		sym;
 
+	binary_is_corrupt(bin, cmd, sizeof(sym));
 	ft_memcpy(&sym, cmd, sizeof(sym));
 	return (sym.nsyms);
 }
@@ -60,7 +61,7 @@ static t_symb				*alloc_symbols(t_binary *bin, size_t size)
 	{
 		cmd = bin->content.mach64.cmds[i];
 		if (cmd.cmd == LC_SYMTAB)
-			size += get_size(&cmd);
+			size += get_size(bin, &cmd);
 		i++;
 	}
 	list = (t_symb*)malloc(sizeof(t_symb) * (size + 1));
