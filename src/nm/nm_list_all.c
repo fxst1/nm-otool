@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 10:35:04 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 10:36:56 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ static void 		print_list(t_symb *list)
 		c = str[sym.type];
 		if (c == 't' && sym.sect == 10)
 			c = 'b';
-		printf("%c (%d-%d)\t%s\n", c, sym.type, sym.sect, sym.name);
+		write(1, &c, 1);
+		ft_putstr_fd(" ", 1);
+		ft_putstr_fd(sym.name, 1);
+		ft_putstr_fd("\n", 1);
 		i++;
 	}
 }
