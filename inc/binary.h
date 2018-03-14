@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 11:39:22 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 12:57:07 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define TYPE_ID_ELF32 4
 # include <ftelf.h>
 # include <ftmach.h>
+
 typedef struct stat	t_stat;
 
 typedef union		u_binary_type
@@ -51,16 +52,6 @@ typedef union		u_binary_type
 	t_elf64			elf64;
 	t_elf32			elf32;
 }					t_binary_type;
-
-typedef struct		s_binary
-{
-	uint8_t			type_id;
-	uint32_t		magic;
-	t_binary_type	content;
-	uint8_t			*buffer;
-	size_t			size;
-	size_t			actual;
-}					t_binary;
 
 typedef struct		s_section_info
 {
@@ -76,11 +67,24 @@ typedef struct		s_symb
 	uint32_t		value;
 }					t_symb;
 
-void				binary_can_read(t_binary *bin, size_t nbytes);
+typedef struct		s_binary
+{
+	uint8_t			type_id;
+	uint32_t		magic;
+	t_binary_type	content;
+	uint8_t			*buffer;
+	size_t			size;
+	t_symb			*symbols;
+}					t_binary;
+
+void				binary_strtab_corrupt(t_binary *bin, char *addr);
 void				binary_is_corrupt(t_binary *bin, void *addr, size_t nbytes);
 
 int					binary_read(const char *filename, t_binary *h);
 void 				binary_delete(t_binary *bin);
+
+void				mach_clear_32(t_mach32 mach);
+void				mach_clear_64(t_mach64 mach);
 
 int					mach_read_32(t_binary *bin);
 int					mach_read_64(t_binary *bin);

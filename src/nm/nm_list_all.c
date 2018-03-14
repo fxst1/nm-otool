@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 10:55:52 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 12:58:39 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,12 @@ static void 		print_list(t_symb *list)
 
 void				nm_list_all(t_nm *data)
 {
-	t_symb			*list;
-
 	if (data->bin.type_id == TYPE_ID_MACH64)
-		list = mach_get_symbol_list_64(&data->bin);
+		data->bin.symbols = mach_get_symbol_list_64(&data->bin);
 	else if (data->bin.type_id == TYPE_ID_MACH32)
-		list = mach_get_symbol_list_64(&data->bin);
+		data->bin.symbols = mach_get_symbol_list_64(&data->bin);
 	else
 		return ;
-
-	sort_table(list);
-	print_list(list);
-	free(list);
+	sort_table(data->bin.symbols);
+	print_list(data->bin.symbols);
 }

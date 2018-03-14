@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 09:18:55 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 13:30:39 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,6 @@ typedef struct				s_mach32_section
 	uint32_t				reserved2;
 }							t_mach32_section;
 
-typedef struct				s_mach64_section
-{
-	char					sectname[16];
-	char					segname[16];
-	uint64_t				addr;
-	uint64_t				size;
-	uint32_t				offset;
-	uint32_t				align;
-	uint32_t				reloff;
-	uint32_t				nreloc;
-	uint32_t				flags;
-	uint32_t				reserved1;
-	uint32_t				reserved2;
-}							t_mach64_section;
-
 typedef struct				s_mach32_header
 {
 	uint32_t				magic;
@@ -82,8 +67,23 @@ typedef struct				s_segment32_command
 	uint32_t				initprot;
 	uint32_t				nsects;
 	uint32_t				flags;
-	t_mach64_section		*sections;
+	t_mach32_section		*sections;
 }							t_segment32_command;
+
+typedef struct				s_mach64_section
+{
+	char					sectname[16];
+	char					segname[16];
+	uint64_t				addr;
+	uint64_t				size;
+	uint32_t				offset;
+	uint32_t				align;
+	uint32_t				reloff;
+	uint32_t				nreloc;
+	uint32_t				flags;
+	uint32_t				reserved1;
+	uint32_t				reserved2;
+}							t_mach64_section;
 
 typedef struct				s_mach64_header
 {

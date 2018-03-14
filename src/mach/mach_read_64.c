@@ -10,6 +10,7 @@ static size_t	read_sections(uint8_t *buf, t_segment64_command *cmd,
 												(cmd->nsects + 1));
 	if (!cmd->sections)
 	{
+		binary_delete(bin);
 		ft_putstr_fd("Cannot allocate sections\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
@@ -24,6 +25,25 @@ static size_t	read_sections(uint8_t *buf, t_segment64_command *cmd,
 	return (0);
 }
 
+static size_t	get_header(t_binary *h)
+{
+	size_t		n;
+
+	binary_is_corrupt(h, h->buffer, sizeof(t_mach64_header));
+	ft_memcpy(&h->content.mach64.header, h->buffer, sizeof(t_mach64_header));
+	n = h->content.mach64.header.ncmds;
+	h->content.mach64.cmds = (t_segment64_command*)malloc(
+										sizeof(t_segment64_command) * (n + 1));
+	if (!h->content.mach64.cmds)
+	{
+		binary_delete(h);
+		ft_putstr_fd("Cannot allocate segments", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	ft_bzero(h->content.mach64.cmds, sizeof(t_segment64_command) * (n + 1));
+	return (n);
+}
+
 int				mach_read_64(t_binary *h)
 {
 	size_t					i;
@@ -32,16 +52,9 @@ int				mach_read_64(t_binary *h)
 	t_segment64_command		seg;
 
 	i = 0;
-	buf = h->buffer;
+	n = get_header(h);
+	buf = h->buffer + sizeof(t_mach64_header);
 	h->type_id = TYPE_ID_MACH64;
-	ft_memcpy(&h->content.mach64.header, buf, sizeof(t_mach64_header));
-	buf += sizeof(t_mach64_header);
-	n = (size_t)h->content.mach64.header.ncmds;
-	h->content.mach64.cmds = (t_segment64_command*)malloc(
-										sizeof(t_segment64_command) * (n + 1));
-	if (!h->content.mach64.cmds)
-		return (-1);
-	ft_bzero(h->content.mach64.cmds, sizeof(t_segment64_command) * (n + 1));
 	while (i < n)
 	{
 		binary_is_corrupt(h, buf, sizeof(t_segment64_command));

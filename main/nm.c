@@ -6,15 +6,16 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/13 15:16:09 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 13:00:52 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-static void		usage(void)
+static void		usage(int ret)
 {
 	ft_putstr_fd("Usage: nm [-su] <object file>\n", STDOUT_FILENO);
+	exit(ret);
 }
 
 static int		parse_option(t_nm *data, char *opt)
@@ -40,8 +41,14 @@ static int		parse_option(t_nm *data, char *opt)
 
 static void		nm_process(t_nm *data)
 {
+	if (binary_read(data->filename, &data->bin) != 0)
+	{
+		write(2, "nm: error\n", 13);
+		binary_delete(&data->bin);
+		exit(EXIT_FAILURE);
+	}
 	nm_list_all(data);
-	free(data->bin.buffer);
+	binary_delete(&data->bin);
 }
 
 int				main(int argc, char **argv)
@@ -55,31 +62,14 @@ int				main(int argc, char **argv)
 		while (*argv)
 		{
 			if (!parse_option(&data, *argv))
-			{
-				usage();
-				return (1);
-			}
+				usage(EXIT_FAILURE);
 			argv++;
 		}
 		if (data.filename == NULL)
-		{
-			usage();
-			return (0);
-		}
+			usage(EXIT_SUCCESS);
 	}
 	else
-	{
-		usage();
-		return (0);
-	}
-
-	if (binary_read(data.filename, &data.bin) != 0)
-	{
-		write(2, "nm: error\n", 13);
-		return (1);
-	}
+		usage(EXIT_SUCCESS);
 	nm_process(&data);
 	return (0);
-	(void)argc;
-	(void)argv;
 }
