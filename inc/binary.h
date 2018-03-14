@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/13 09:36:34 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 09:35:05 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,21 @@ typedef struct		s_section_info
 	off_t			offset;
 }					t_section_info;
 
+typedef struct		s_symb
+{
+	char			*name;
+	int				type;
+	uint32_t		value;
+}					t_symb;
+
 int					binary_read(const char *filename, t_binary *h);
-int					mach_read_32(t_binary *h);
-int					elf_read_32(t_binary *h);
-int					mach_read_64(t_binary *h);
-int					elf_read_64(t_binary *h);
+int					mach_read_32(t_binary *bin);
+int					mach_read_64(t_binary *bin);
+int					elf_read_32(t_binary *bin);
+int					elf_read_64(t_binary *bin);
+
+t_symb				*mach_get_symbol_list_64(t_binary *bin);
+t_symb				*mach_get_symbol_list_32(t_binary *bin);
 
 void				get_segment_section(t_binary *bin, char *segname,
 										char *sectname, t_section_info *sect);

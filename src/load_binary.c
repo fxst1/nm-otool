@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:56:58 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 16:06:47 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 22:25:25 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ int				binary_read(const char *filename, t_binary *h)
 	if (fstat(fd, &st) == -1)
 		return (error(fd, "stat", filename));
 	h->size = st.st_size;
+	//h->buffer = (uint8_t*)mmap(NULL, st.st_size,
+	//					PROT_READ | PROT_EXEC, MAP_PRIVATE, fd, 0);
 	h->buffer = (uint8_t*)malloc(st.st_size);
-	if (h->buffer == NULL)
+	if (h->buffer == NULL || h->buffer == MAP_FAILED)
 		return (error(fd, "allocate buffer", NULL));
 	else if (read(fd, h->buffer, h->size) < 0)
 		return (error(fd, "read", filename));

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/13 12:47:53 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/13 15:16:09 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int				main(int argc, char **argv)
 
 	if (binary_read(data.filename, &data.bin) != 0)
 	{
-		write(2, "otool: error\n", 13);
+		write(2, "nm: error\n", 13);
 		return (1);
 	}
 	nm_process(&data);
