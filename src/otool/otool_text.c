@@ -14,13 +14,15 @@ void			otool_text(t_otool *data)
 		while (i < sect.size)
 		{
 			j = 0;
-			ft_puthex_fd(sect.offset + i, 1);
+			ft_putstr_fd("0x", 1);
+			ft_putnbr_base_offset_fd(sect.offset + i, BASE_HEX, 16, 1);
 			while (j < 16 && i + j < sect.size)
 			{
 				write(1, " ", 1);
 				if (data->bin.buffer[sect.offset + i + j] <= 0xf)
 					ft_putstr_fd("0", 1);
-				ft_putnbr_base_fd(data->bin.buffer[sect.offset + i + j], BASE_HEX, 1);
+				ft_putnbr_base_fd(data->bin.buffer[sect.offset + i + j],
+									BASE_HEX, 1);
 				j++;
 			}
 			write(1, "\n", 1);
