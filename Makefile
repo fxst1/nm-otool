@@ -6,7 +6,7 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2018/03/14 12:00:25 by fxst1            ###   ########.fr        #
+#    Updated: 2018/03/14 12:00:46 by fxst1            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
@@ -45,7 +45,7 @@ fclean:
 
 re: fclean all
 
-push:
+push: fclean
 	git add --all
 	git commit -am "fix"
 	git push

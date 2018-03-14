@@ -16,12 +16,10 @@ static size_t	read_sections(uint8_t *buf, t_segment64_command *cmd,
 	ft_bzero(cmd->sections, sizeof(t_mach64_section) * (cmd->nsects + 1));
 	while (i < cmd->nsects)
 	{
-		binary_can_read(bin, sizeof(t_mach64_section));
+		binary_is_corrupt(bin, buf, sizeof(t_mach64_section));
 		ft_memcpy(&cmd->sections[i], buf, sizeof(t_mach64_section));
 		buf += sizeof(t_mach64_section);
 		i++;
-		if ( i >= 10)
-			exit(0);
 	}
 	return (0);
 }
