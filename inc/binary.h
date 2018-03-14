@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 09:35:05 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 10:25:51 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct		s_symb
 {
 	char			*name;
 	int				type;
+	int				sect;
 	uint32_t		value;
 }					t_symb;
 

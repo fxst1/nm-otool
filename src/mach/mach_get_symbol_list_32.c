@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 09:52:59 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 10:26:33 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void			mach_get_symbols_32(uint8_t *buf, t_symtab_command *sym,
 	{
 		msymb.value = symb->value;
 		msymb.type = symb->type;
+		msymb.sect = symb->sect;
 		msymb.name = strtab + symb->strx;
 		**list = msymb;
 		(*list)++;

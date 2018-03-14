@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 09:56:32 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 10:30:47 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static void			sort_table(t_symb *in)
 
 static void 		print_list(t_symb *list)
 {
+	static char		*str = "?U????????????tT???";
 	size_t			i;
 	t_symb			sym;
 
@@ -45,11 +46,16 @@ static void 		print_list(t_symb *list)
 	while (list[i].name)
 	{
 		sym = list[i];
+		if (sym.type > 15)
+		{
+			i++;
+			continue ;
+		}
 		if (sym.value == 0)
 			ft_putstr_fd("                 ", 1);
 		else
 			printf("%016x ", sym.value);
-		printf(" %d\t%s\n", sym.type, sym.name);
+		printf("%c (%d-%d)\t%s\n", str[sym.type], sym.type, sym.sect, sym.name);
 		i++;
 	}
 }
