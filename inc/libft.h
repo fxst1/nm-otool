@@ -11,5 +11,6 @@ void				ft_putnbr_fd(int n, int fd);
 void				ft_putnbr_base_fd(int nb, char *base, int fd);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
+void				ft_putnbr_base_offset_fd(int nb, char *base, size_t offset, int fd);
 
 #endif

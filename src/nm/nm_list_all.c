@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 10:36:56 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 10:55:52 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,17 @@ static void 		print_list(t_symb *list)
 			continue ;
 		}
 		if (sym.value == 0)
-			ft_putstr_fd("                 ", 1);
+			ft_putstr_fd("                ", 1);
 		else
-			printf("%016x ", sym.value);
+			ft_putnbr_base_offset_fd(sym.value, BASE_HEX, 16, 1);
 		c = str[sym.type];
 		if (c == 't' && sym.sect == 10)
 			c = 'b';
+		write(1, " ", 1);
 		write(1, &c, 1);
-		ft_putstr_fd(" ", 1);
+		write(1, " ", 1);
 		ft_putstr_fd(sym.name, 1);
-		ft_putstr_fd("\n", 1);
+		write(1, "\n", 1);
 		i++;
 	}
 }

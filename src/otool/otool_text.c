@@ -6,13 +6,10 @@ void			otool_text(t_otool *data)
 	size_t			i;
 	size_t			j;
 
-	printf("Sizeof mach64 header %zu\n", sizeof(t_mach64_header));
 	get_segment_section(&data->bin, "__TEXT", "__text", &sect);
 	if (sect.size > 0)
 	{
 		ft_putstr_fd("(__TEXT,__text) section\n", 1);
-		printf("%ld, %x\n", sect.size, (uint32_t)sect.offset);
-		printf("%zu\n", data->bin.size);
 		i = 0;
 		while (i < sect.size)
 		{
