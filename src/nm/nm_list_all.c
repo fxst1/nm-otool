@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 14:10:18 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/11 15:13:09 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void 		print_list(t_symb *list)
 		else if (c == 'T' && (sym.sect == 4))
 			c = 'S';
 		write(1, " ", 1);
-		ft_putnbr_fd(sym.sect, 1);
+		ft_putnbr_fd(sym.value, 1);
 		write(1, " ", 1);
 		write(1, &c, 1);
 		write(1, " ", 1);
