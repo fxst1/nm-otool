@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 17:03:52 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/14 18:38:27 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,26 @@ static void			sort_table(t_symb *in)
 	}
 }
 
-static void			print_symbol(t_symb sym)
+static void			print_symbol(t_symb sym, size_t nbits)
+{
+	if (sym.value == 0)
+		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
+	else
+		ft_putnbr_base_offset_fd(sym.value, BASE_HEX, nbits, 1);
+	write(1, " ", 1);
+	write(1, &sym.type_char, 1);
+	write(1, " ", 1);
+	ft_putstr_fd(sym.name, 1);
+	write(1, "\n", 1);
+}
+/*
+static void			print_symbol(t_symb sym, size_t nbits)
 {
 	static char		*str = "?U????????????tT???";
 	char			c;
 
-	sym = list[i];
-	if (sym.type > 15)
-	{
-		i++;
-		continue ;
-	}
+	if (sym.type & N_STAB)
+		return ;
 	if (sym.value == 0)
 		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
 	else
@@ -62,7 +71,7 @@ static void			print_symbol(t_symb sym)
 	ft_putstr_fd(sym.name, 1);
 	write(1, "\n", 1);
 }
-
+*/
 static void			print_list(t_symb *list, size_t nbits)
 {
 	size_t			i;
@@ -70,7 +79,7 @@ static void			print_list(t_symb *list, size_t nbits)
 	i = 0;
 	while (list[i].name)
 	{
-		print_symbol(list[i]);
+		print_symbol(list[i], nbits);
 		i++;
 	}
 }

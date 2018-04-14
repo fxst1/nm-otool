@@ -6,11 +6,28 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 16:42:24 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/14 18:39:54 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
+
+static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb)
+{
+	symb->value = syssymb->value;
+	symb->type = syssymb->type;
+	symb->sect = syssymb->sect;
+	if (syssymb->type & N_STAB)
+		symb->type_char = '-';
+	else if ((syssymb->type & N_TYPE) == N_UNDF)
+		symb->type_char = 'U';
+	else if ((syssymb->type & N_TYPE) == N_ABS)
+		symb->type_char = 'A';
+	else if ((syssymb->type & N_TYPE) == N_INDR)
+		symb->type_char = 'I';
+	else
+		symb->type_char = '?';
+}
 
 static void				mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
 										t_symb **list, t_binary *bin)
@@ -29,9 +46,7 @@ static void				mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
 	{
 		binary_strtab_corrupt(bin, strtab + symb->strx);
 		binary_is_corrupt(bin, symb, sizeof(t_nlist64));
-		msymb.value = symb->value;
-		msymb.type = symb->type;
-		msymb.sect = symb->sect;
+		syssymbol_to_symbol(symb, &msymb);
 		msymb.name = strtab + symb->strx;
 		**list = msymb;
 		(*list)++;

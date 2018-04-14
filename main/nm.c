@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 15:17:33 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/14 17:31:05 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int				main(int argc, char **argv)
 {
 	t_nm		data;
 
+	printf("%x\n", N_TYPE);
 	ft_bzero(&data, sizeof(data));
 	if (argc >= 1)
 	{
