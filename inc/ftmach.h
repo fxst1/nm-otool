@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 13:30:39 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:04:05 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,20 +139,20 @@ typedef struct				s_mach64
 
 typedef struct				s_list32
 {
-   uint32_t					strx;
-   uint8_t					type;
-   uint8_t					sect;
-   int16_t					desc;
-   uint32_t					value;
+	uint32_t				strx;
+	uint8_t					type;
+	uint8_t					sect;
+	int16_t					desc;
+	uint32_t				value;
 }							t_nlist32;
 
 typedef struct				s_list64
 {
-   uint32_t					strx;
-   uint8_t					type;
-   uint8_t					sect;
-   int16_t					desc;
-   uint64_t					value;
+	uint32_t				strx;
+	uint8_t					type;
+	uint8_t					sect;
+	int16_t					desc;
+	uint64_t				value;
 }							t_nlist64;
 
 typedef struct				s_load_command

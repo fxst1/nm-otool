@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 13:00:52 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 15:17:33 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int				main(int argc, char **argv)
 	t_nm		data;
 
 	ft_bzero(&data, sizeof(data));
-	if (argc >= 2)
+	if (argc >= 1)
 	{
 		argv++;
 		while (*argv)
@@ -66,7 +66,7 @@ int				main(int argc, char **argv)
 			argv++;
 		}
 		if (data.filename == NULL)
-			usage(EXIT_SUCCESS);
+			data.filename = "a.out";
 	}
 	else
 		usage(EXIT_SUCCESS);

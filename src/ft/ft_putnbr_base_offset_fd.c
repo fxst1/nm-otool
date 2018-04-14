@@ -6,13 +6,13 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 20:51:22 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/03/14 13:50:01 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:36:01 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-static size_t 	getoffset(int nb, char *base, size_t *n)
+static size_t	getoffset(long nb, char *base, size_t *n)
 {
 	int length;
 
@@ -32,7 +32,7 @@ static size_t 	getoffset(int nb, char *base, size_t *n)
 	return (*n);
 }
 
-void			ft_putnbr_base_offset_fd(int nb, char *base, size_t offset,
+void			ft_putnbr_base_offset_fd(long nb, char *base, size_t offset,
 											int fd)
 {
 	size_t		tmp;

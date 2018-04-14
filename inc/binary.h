@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 22:17:29 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:01:37 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct		s_symb
 	char			*name;
 	int				type;
 	int				sect;
-	uint32_t		value;
+	uint64_t		value;
 }					t_symb;
 
 typedef struct		s_binary
@@ -80,7 +80,7 @@ void				binary_strtab_corrupt(t_binary *bin, char *addr);
 void				binary_is_corrupt(t_binary *bin, void *addr, size_t nbytes);
 
 int					binary_read(const char *filename, t_binary *h);
-void 				binary_delete(t_binary *bin);
+void				binary_delete(t_binary *bin);
 
 void				mach_clear_32(t_mach32 mach);
 void				mach_clear_64(t_mach64 mach);

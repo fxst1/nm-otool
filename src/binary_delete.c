@@ -6,13 +6,13 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 11:12:26 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 20:33:27 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:05:39 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-void 	binary_delete(t_binary *bin)
+void		binary_delete(t_binary *bin)
 {
 	if (bin->type_id == TYPE_ID_MACH64)
 		mach_clear_64(bin->content.mach64);

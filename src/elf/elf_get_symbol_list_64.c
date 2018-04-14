@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 20:52:01 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/15 15:26:03 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 15:34:27 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static void		elf_symbol2symb(t_binary *bin, t_symb **list, size_t offset,
 	sym.type = in.info & 0xf;
 	sym.value = in.value;
 	sym.sect = 0;
-	printf("      at %lx, %d, %d\n", offset, SHT_SYMTAB, SHT_STRTAB);
-	printf("    name %s (%x - %p)\n", strtab + in.name + 1, in.name, strtab);
-	printf("   value %lx\n", in.value);
-	printf("    size %lx\n", in.size);
-	printf("   shndx %x\n\n", in.shndx);
+	//printf("      at %lx, %d, %d\n", offset, SHT_SYMTAB, SHT_STRTAB);
+	//printf("    name %s (%x - %p)\n", strtab + in.name + 1, in.name, strtab);
+	//printf("   value %lx\n", in.value);
+	//printf("    size %lx\n", in.size);
+	//printf("   shndx %x\n\n", in.shndx);
 	**list = sym;
 	(*list)++;
 }
@@ -50,7 +50,6 @@ static t_symb	*alloc_symbols(t_binary *bin, size_t n)
 			size += (sections[i].size / sections[i].entsize);
 		i++;
 	}
-	printf("size = %zu\n", size);
 	symbs = (t_symb*)malloc(sizeof(t_symb) * (size + 1));
 	ft_bzero(symbs, sizeof(t_symb) * (size + 1));
 	if (!symbs)

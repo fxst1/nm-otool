@@ -6,11 +6,21 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:32 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 22:48:29 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:35:36 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
+
+static void	read_section(t_binary *bin, t_elf64 *elf, uint8_t *buf, size_t i)
+{
+	binary_is_corrupt(bin, buf, sizeof(t_elf64_section));
+	ft_memcpy(&elf->sections[i], buf, sizeof(t_elf64_section));
+	if (i == elf->header.shstrndx && elf->sections[i].type == ELF_SHT_STRTAB)
+		elf->shstrtab = (char*)bin->buffer + elf->sections[i].offset;
+	else if (elf->sections[i].type == ELF_SHT_STRTAB)
+		elf->strtab = (char*)bin->buffer + elf->sections[i].offset;
+}
 
 static void	read_sections(t_binary *bin, t_elf64 *elf)
 {
@@ -33,12 +43,7 @@ static void	read_sections(t_binary *bin, t_elf64 *elf)
 	elf->strtab = NULL;
 	while (i < n)
 	{
-		binary_is_corrupt(bin, buf, sizeof(t_elf64_section));
-		ft_memcpy(&elf->sections[i], buf, sizeof(t_elf64_section));
-		if (i == elf->header.shstrndx && elf->sections[i].type == ELF_SHT_STRTAB)
-			elf->shstrtab = (char*)bin->buffer + elf->sections[i].offset;
-		else if (elf->sections[i].type == ELF_SHT_STRTAB)
-			elf->strtab = (char*)bin->buffer + elf->sections[i].offset;
+		read_section(bin, elf, buf, i);
 		buf += elf->header.shentsize;
 		i++;
 	}

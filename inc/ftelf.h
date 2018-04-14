@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:05 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 22:46:54 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:03:12 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct		s_elf32_prog
 	uint32_t		align;
 }					t_elf32_prog;
 
-typedef struct 		s_elf32_section
+typedef struct		s_elf32_section
 {
 	uint32_t		name;
 	uint32_t		type;
@@ -111,7 +111,7 @@ typedef struct		s_elf64_prog
 	uint32_t		align;
 }					t_elf64_prog;
 
-typedef struct 		s_elf64_section
+typedef struct		s_elf64_section
 {
 	uint32_t		name;
 	uint32_t		type;

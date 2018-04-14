@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 17:00:25 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/11 15:28:44 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/14 16:37:08 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	get_section2(t_segment32_command *cmd, char *sectname,
 	}
 	return (0);
 }
-
 
 void		mach_get_section_32(t_mach32 data, char *segname, char *sectname,
 								t_section_info *sect)

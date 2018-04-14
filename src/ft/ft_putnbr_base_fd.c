@@ -6,13 +6,13 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 20:51:22 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/03/12 16:38:51 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 15:40:20 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-void	ft_putnbr_base_fd(int nb, char *base, int fd)
+void	ft_putnbr_base_fd(long nb, char *base, int fd)
 {
 	int length;
 

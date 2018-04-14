@@ -6,20 +6,20 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 13:31:29 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:42:31 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-static void			mach_get_symbols_32(uint8_t *buf, t_symtab_command *sym,
+static void				mach_get_symbols_32(uint8_t *buf, t_symtab_command *sym,
 										t_symb **list, t_binary *bin)
 {
-	size_t			i;
-	size_t			n;
-	char			*strtab;
-	t_nlist32		*symb;
-	t_symb			msymb;
+	size_t				i;
+	size_t				n;
+	char				*strtab;
+	t_nlist32			*symb;
+	t_symb				msymb;
 
 	i = 0;
 	n = sym->nsyms;
@@ -40,19 +40,19 @@ static void			mach_get_symbols_32(uint8_t *buf, t_symtab_command *sym,
 	}
 }
 
-static size_t				get_size(t_segment32_command *cmd)
+static size_t			get_size(t_segment32_command *cmd)
 {
-	t_symtab_command		sym;
+	t_symtab_command	sym;
 
 	ft_memcpy(&sym, cmd, sizeof(sym));
 	return (sym.nsyms);
 }
 
-static t_symb				*alloc_symbols(t_binary *bin, size_t size)
+static t_symb			*alloc_symbols(t_binary *bin, size_t size)
 {
-	size_t					i;
-	size_t 					n;
-	t_segment32_command		cmd;
+	size_t				i;
+	size_t				n;
+	t_segment32_command	cmd;
 
 	i = 0;
 	n = bin->content.mach32.header.ncmds;
@@ -75,13 +75,13 @@ static t_symb				*alloc_symbols(t_binary *bin, size_t size)
 	return (bin->symbols);
 }
 
-t_symb						*mach_get_symbol_list_32(t_binary *bin)
+t_symb					*mach_get_symbol_list_32(t_binary *bin)
 {
-	size_t					i;
-	size_t 					n;
-	t_symtab_command		sym;
-	t_symb					*list;
-	t_symb					*tmp;
+	size_t				i;
+	size_t				n;
+	t_symtab_command	sym;
+	t_symb				*list;
+	t_symb				*tmp;
 
 	i = 0;
 	n = bin->content.mach32.header.ncmds;

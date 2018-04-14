@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mach_read_64.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/14 16:40:20 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/04/14 16:40:57 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <binary.h>
 
-static size_t	read_sections(uint8_t *buf, t_segment64_command *cmd,
+static size_t				read_sections(uint8_t *buf,
+								t_segment64_command *cmd,
 								t_binary *bin)
 {
-	size_t				i;
+	size_t					i;
 
 	i = 0;
 	cmd->sections = (t_mach64_section*)malloc(sizeof(t_mach64_section) *
@@ -25,9 +38,9 @@ static size_t	read_sections(uint8_t *buf, t_segment64_command *cmd,
 	return (0);
 }
 
-static size_t	get_header(t_binary *h)
+static size_t				get_header(t_binary *h)
 {
-	size_t		n;
+	size_t					n;
 
 	binary_is_corrupt(h, h->buffer, sizeof(t_mach64_header));
 	ft_memcpy(&h->content.mach64.header, h->buffer, sizeof(t_mach64_header));
@@ -44,7 +57,7 @@ static size_t	get_header(t_binary *h)
 	return (n);
 }
 
-int				mach_read_64(t_binary *h)
+int							mach_read_64(t_binary *h)
 {
 	size_t					i;
 	size_t					n;

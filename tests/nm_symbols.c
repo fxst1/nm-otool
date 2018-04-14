@@ -16,6 +16,7 @@ int				main(int argc, char **argv)
 
 	g_global = 0;
 	g_mystatic = 0;
+	errno = 0;
 
 	return (0);
 	(void)argc;

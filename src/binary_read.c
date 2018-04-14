@@ -6,13 +6,13 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:56:58 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 17:52:29 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/14 16:06:43 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-static int 		error(const int fd, const char *err, const char *filename)
+static int		error(const int fd, const char *err, const char *filename)
 {
 	write(2, "Cannot ", 7);
 	ft_putstr_fd(err, 2);
@@ -60,7 +60,6 @@ int				binary_read(const char *filename, t_binary *h)
 	if (fstat(fd, &st) == -1)
 		return (error(fd, "stat", filename));
 	h->size = st.st_size;
-	printf("%zu\n", h->size);
 	h->symbols = NULL;
 	h->buffer = (uint8_t*)malloc(st.st_size);
 	if (h->buffer == NULL || h->buffer == MAP_FAILED)
