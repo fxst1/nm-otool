@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   binary_delete.c                                    :+:      :+:    :+:   */
+/*   elf_clear_64.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/14 11:12:26 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 20:33:27 by fxst1            ###   ########.fr       */
+/*   Created: 2018/03/14 19:21:38 by fxst1             #+#    #+#             */
+/*   Updated: 2018/03/14 20:33:42 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-void 	binary_delete(t_binary *bin)
+void			elf_clear_64(t_elf64 elf)
 {
-	if (bin->type_id == TYPE_ID_MACH64)
-		mach_clear_64(bin->content.mach64);
-	else if (bin->type_id == TYPE_ID_MACH32)
-		mach_clear_32(bin->content.mach32);
-	else if (bin->type_id == TYPE_ID_ELF64)
-		elf_clear_64(bin->content.elf64);
-	else if (bin->type_id == TYPE_ID_ELF32)
-		elf_clear_32(bin->content.elf32);
-	free(bin->buffer);
-	free(bin->symbols);
+	free(elf.sections);
 }

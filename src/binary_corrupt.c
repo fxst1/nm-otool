@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 11:24:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 12:56:10 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 17:24:45 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void			binary_strtab_corrupt(t_binary *bin, char *addr)
 		addr++;
 	}
 }
+
 
 void			binary_is_corrupt(t_binary *bin, void *addr, size_t nbytes)
 {

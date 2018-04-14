@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/14 12:57:07 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/03/14 22:17:29 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@
 #  define MAP_ANONYMOUS MAP_ANON
 # endif
 
-# define ELF_MAGIC_32 0x4c46457f
-# define ELF_MAGIC_64 ELF_MAGIC_32
+# define ELF_MAGIC 0x464c457f
 # define TYPE_ID_MACH32 1
 # define TYPE_ID_MACH64 2
 # define TYPE_ID_ELF64 3
@@ -85,6 +84,8 @@ void 				binary_delete(t_binary *bin);
 
 void				mach_clear_32(t_mach32 mach);
 void				mach_clear_64(t_mach64 mach);
+void				elf_clear_32(t_elf32 mach);
+void				elf_clear_64(t_elf64 mach);
 
 int					mach_read_32(t_binary *bin);
 int					mach_read_64(t_binary *bin);
@@ -94,11 +95,14 @@ int					elf_read_64(t_binary *bin);
 t_symb				*mach_get_symbol_list_64(t_binary *bin);
 t_symb				*mach_get_symbol_list_32(t_binary *bin);
 
+t_symb				*elf_get_symbol_list_64(t_binary *bin);
+
 void				get_segment_section(t_binary *bin, char *segname,
 										char *sectname, t_section_info *sect);
 void				mach_get_section_32(t_mach32 data, char *segname,
 										char *sectname, t_section_info *sect);
 void				mach_get_section_64(t_mach64 data, char *segname,
 										char *sectname, t_section_info *sect);
-
+void				elf_get_section_64(t_binary *bin, char *sectname,
+										t_section_info *sect);
 #endif

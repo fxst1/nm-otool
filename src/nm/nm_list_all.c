@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/11 15:13:09 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/11 21:11:50 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void			sort_table(t_symb *in)
 	}
 }
 
-static void 		print_list(t_symb *list)
+static void 		print_list(t_symb *list, size_t nbits)
 {
 	static char		*str = "?U????????????tT???";
 	size_t			i;
@@ -53,16 +53,14 @@ static void 		print_list(t_symb *list)
 			continue ;
 		}
 		if (sym.value == 0)
-			ft_putstr_fd("                ", 1);
+			ft_putstr_fd(nbits == 8 ?  "        " : "                ", 1);
 		else
-			ft_putnbr_base_offset_fd(sym.value, BASE_HEX, 16, 1);
+			ft_putnbr_base_offset_fd(sym.value, BASE_HEX, nbits, 1);
 		c = str[sym.type];
 		if (c == 't' && (sym.sect == 10 || sym.sect == 3))
 			c = 'b';
 		else if (c == 'T' && (sym.sect == 4))
 			c = 'S';
-		write(1, " ", 1);
-		ft_putnbr_fd(sym.value, 1);
 		write(1, " ", 1);
 		write(1, &c, 1);
 		write(1, " ", 1);
@@ -74,12 +72,20 @@ static void 		print_list(t_symb *list)
 
 void				nm_list_all(t_nm *data)
 {
+	size_t			nbits;
+
 	if (data->bin.type_id == TYPE_ID_MACH64)
+	{
 		data->bin.symbols = mach_get_symbol_list_64(&data->bin);
+		nbits = 16;
+	}
 	else if (data->bin.type_id == TYPE_ID_MACH32)
-		data->bin.symbols = mach_get_symbol_list_64(&data->bin);
+	{
+		data->bin.symbols = mach_get_symbol_list_32(&data->bin);
+		nbits = 8;
+	}
 	else
 		return ;
 	sort_table(data->bin.symbols);
-	print_list(data->bin.symbols);
+	print_list(data->bin.symbols, nbits);
 }
