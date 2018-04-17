@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 16:42:31 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:28:47 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,15 @@ static t_symb			*alloc_symbols(t_binary *bin, size_t size)
 			size += get_size(&cmd);
 		i++;
 	}
-	bin->symbols = (t_symb*)malloc(sizeof(t_symb) * (size + 1));
+	bin->n_symbols = size;
+	bin->symbols = (t_symb*)malloc(sizeof(t_symb) * size);
 	if (bin->symbols == NULL)
 	{
 		binary_delete(bin);
 		ft_putstr_fd("Cannot allocate symbol list\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	ft_bzero(bin->symbols, sizeof(t_symb) * (size + 1));
+	ft_bzero(bin->symbols, sizeof(t_symb) * size);
 	return (bin->symbols);
 }
 

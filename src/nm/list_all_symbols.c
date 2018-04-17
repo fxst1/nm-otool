@@ -6,13 +6,13 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 20:14:43 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 22:04:21 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-static void			sort_table(t_symb *in)
+static void			sort_table(t_symb *in, size_t n_symbols)
 {
 	size_t			i;
 	size_t			j;
@@ -20,10 +20,10 @@ static void			sort_table(t_symb *in)
 	t_symb			swap;
 
 	i = 0;
-	while (in[i].name)
+	while (i < n_symbols)
 	{
 		j = i + 1;
-		while (in[j].name)
+		while (j < n_symbols)
 		{
 			cmp = ft_strcmp(in[i].name, in[j].name);
 			if (cmp > 0 || (cmp == 0 && in[i].value > in[j].value))
@@ -53,12 +53,12 @@ static void			print_symbol(t_symb sym, size_t nbits)
 	write(1, "\n", 1);
 }
 
-static void			print_list(t_symb *list, size_t nbits)
+static void			print_list(t_symb *list, size_t nbits, size_t n_symbols)
 {
 	size_t			i;
 
 	i = 0;
-	while (list[i].name)
+	while (i < n_symbols)
 	{
 		print_symbol(list[i], nbits);
 		i++;
@@ -84,8 +84,9 @@ void				list_all_symbols(t_binary *data)
 	}
 	else if (data->type_id == TYPE_ID_FAT)
 	{
-		return ;
+		printf("%p\n", &data->content.fat.n_arch);
+		data->symbols = fat_get_symbol_list(data);
 	}
-	sort_table(data->symbols);
-	print_list(data->symbols, nbits);
+	sort_table(data->symbols, data->n_symbols);
+	print_list(data->symbols, nbits, data->n_symbols);
 }

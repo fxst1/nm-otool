@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 20:32:36 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:58:01 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int					ar_read_64(t_binary *bin);
 
 t_symb				*mach_get_symbol_list_64(t_binary *bin);
 t_symb				*mach_get_symbol_list_32(t_binary *bin);
-
+t_symb				*fat_get_symbol_list(t_binary *bin);
 t_symb				*elf_get_symbol_list_64(t_binary *bin);
 
 void				get_segment_section(t_binary *bin, char *segname,

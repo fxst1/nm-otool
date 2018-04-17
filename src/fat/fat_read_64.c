@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:35:25 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/17 20:37:47 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 22:04:02 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int				fat_read_64(t_binary *bin)
 	fat.n_arch = may_swap32(bin->swap, *(uint32_t*)(bin->buffer + 4));
 	fat.contents = (t_binary*)malloc(sizeof(t_binary) * fat.n_arch);
 	fat.archs = (t_fat_arch*)malloc(sizeof(t_fat_arch) * fat.n_arch);
-	printf("%x\n", fat.n_arch);
 	while (i < fat.n_arch)
 	{
 		binary_is_corrupt(bin, bin->buffer + offset, sizeof(t_fat_arch));
@@ -38,5 +37,6 @@ int				fat_read_64(t_binary *bin)
 		i++;
 		offset += sizeof(t_fat_arch);
 	}
+	printf("%p\n", &fat.n_arch);
 	return (0);
 }

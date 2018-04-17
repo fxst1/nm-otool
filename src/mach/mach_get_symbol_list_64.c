@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 12:39:32 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:28:23 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb,
 	symb->type = syssymb->type;
 	symb->sect = syssymb->sect;
 	if (syssymb->type & N_STAB)
-		symb->type_char = '-';
+		symb->type_char = '~';
 	else if ((syssymb->type & N_TYPE) == N_UNDF)
 		symb->type_char = 'U';
 	else if ((syssymb->type & N_TYPE) == N_ABS)
@@ -29,13 +29,11 @@ static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb,
 	else if ((syssymb->type & N_TYPE) == N_PBUD)
 		symb->type_char = 'S';
 	else if ((syssymb->type & N_TYPE) == N_SECT)
-	{
-		//printf("name: %s - %x\n", name, syssymb->sect);
 		symb->type_char = 'T';
-	}
 	else
 		symb->type_char = '?';
-	if (!(syssymb->type & N_EXT))
+	if (!(syssymb->type & N_EXT) && symb->type_char != '?' &&
+														symb->type_char != '~')
 		symb->type_char += 32;
 	(void)name;
 }
@@ -90,14 +88,15 @@ static t_symb			*alloc_symbols(t_binary *bin, size_t size)
 			size += get_size(&cmd);
 		i++;
 	}
-	bin->symbols = (t_symb*)malloc(sizeof(t_symb) * (size + 1));
+	bin->n_symbols = size;
+	bin->symbols = (t_symb*)malloc(sizeof(t_symb) * size);
 	if (bin->symbols == NULL)
 	{
 		binary_delete(bin);
 		ft_putstr_fd("Cannot allocate symbol list\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	ft_bzero(bin->symbols, sizeof(t_symb) * (size + 1));
+	ft_bzero(bin->symbols, sizeof(t_symb) * size);
 	return (bin->symbols);
 }
 
