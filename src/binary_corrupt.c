@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 11:24:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 16:05:23 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 17:00:01 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void			binary_strtab_corrupt(t_binary *bin, char *addr)
 {
-	if ((uintptr_t)addr - (uintptr_t)bin->buffer > bin->size)
+	if ((uintptr_t)addr - (uintptr_t)bin->ptr > bin->size)
 	{
 		binary_delete(bin);
 		ft_putstr_fd("Corrupt file detected !\n", STDERR_FILENO);
@@ -22,7 +22,7 @@ void			binary_strtab_corrupt(t_binary *bin, char *addr)
 	}
 	while (*addr)
 	{
-		if ((uintptr_t)addr - (uintptr_t)bin->buffer > bin->size)
+		if ((uintptr_t)addr - (uintptr_t)bin->ptr > bin->size)
 		{
 			binary_delete(bin);
 			ft_putstr_fd("Corrupt file detected !\n", STDERR_FILENO);
@@ -34,7 +34,7 @@ void			binary_strtab_corrupt(t_binary *bin, char *addr)
 
 void			binary_is_corrupt(t_binary *bin, void *addr, size_t nbytes)
 {
-	if ((uintptr_t)addr + nbytes - (uintptr_t)bin->buffer > bin->size)
+	if ((uintptr_t)addr + nbytes - (uintptr_t)bin->ptr > bin->size)
 	{
 		binary_delete(bin);
 		ft_putstr_fd("Corrupt file detected !\n", STDERR_FILENO);

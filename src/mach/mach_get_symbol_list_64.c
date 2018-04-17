@@ -6,13 +6,14 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 18:44:45 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 12:39:32 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb)
+static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb,
+							char *name)
 {
 	symb->value = syssymb->value;
 	symb->type = syssymb->type;
@@ -28,9 +29,15 @@ static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb)
 	else if ((syssymb->type & N_TYPE) == N_PBUD)
 		symb->type_char = 'S';
 	else if ((syssymb->type & N_TYPE) == N_SECT)
+	{
+		//printf("name: %s - %x\n", name, syssymb->sect);
 		symb->type_char = 'T';
+	}
 	else
 		symb->type_char = '?';
+	if (!(syssymb->type & N_EXT))
+		symb->type_char += 32;
+	(void)name;
 }
 
 static void				mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
@@ -50,7 +57,7 @@ static void				mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
 	{
 		binary_strtab_corrupt(bin, strtab + symb->strx);
 		binary_is_corrupt(bin, symb, sizeof(t_nlist64));
-		syssymbol_to_symbol(symb, &msymb);
+		syssymbol_to_symbol(symb, &msymb, strtab + symb->strx);
 		msymb.name = strtab + symb->strx;
 		**list = msymb;
 		(*list)++;

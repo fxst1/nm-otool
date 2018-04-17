@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 16:01:01 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/14 16:01:45 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 20:24:04 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
 void				ft_putnbr_base_offset_fd(long nb, char *base, size_t offset,
 						int fd);
+unsigned int		ft_swap_bytes(unsigned int v);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2018/03/15 14:42:49 by fxst1            ###   ########.fr        #
+#    Updated: 2018/04/17 16:34:31 by fjacquem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
@@ -18,8 +18,8 @@ OBJDIR = ./obj/
 SRC := $(filter %.c, $(shell find src -type f))
 OBJ = $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
-NM = nm
-OTOOL = otool
+NM = ft_nm
+OTOOL = ft_otool
 
 all: $(NM) $(OTOOL)
 

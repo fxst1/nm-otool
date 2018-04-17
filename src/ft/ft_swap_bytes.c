@@ -1,27 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm.h                                               :+:      :+:    :+:   */
+/*   ft_swap_bytes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 10:58:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 18:05:17 by fjacquem         ###   ########.fr       */
+/*   Created: 2018/04/17 20:20:45 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/04/17 20:31:16 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NM_H
-# define NM_H
-# include <binary.h>
-# define SHOW_USER_ONLY 1
-# define SHOW_SYSCALL_ONLY 2
-# define SHOW_ALL 4
-
-typedef struct		s_nm
+unsigned int		ft_swap_bytes(unsigned int bytes)
 {
-	char			*filename;
-	t_binary		bin;
-	int				opts;
-}					t_nm;
-
-#endif
+	bytes = ((bytes << 8) & 0xFF00FF00) | ((bytes >> 8) & 0xFF00FF);
+	return (bytes << 16) | (bytes >> 16);
+}

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:56:58 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 16:06:43 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 20:33:20 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,14 @@ static int		error(const int fd, const char *err, const char *filename)
 	return (-1);
 }
 
-static int		parse_binary(t_binary *h)
+uint32_t			may_swap32(int swap, uint32_t value)
+{
+	if (swap)
+		return (ft_swap_bytes(value));
+	return (value);
+}
+
+int				binary_parse(t_binary *h)
 {
 	h->type_id = 0;
 	h->magic = *(uint32_t*)h->buffer;
@@ -35,6 +42,10 @@ static int		parse_binary(t_binary *h)
 		mach_read_64(h);
 	else if (h->magic == MH_MAGIC)
 		mach_read_32(h);
+	else if (h->magic == FAT_MAGIC || h->magic == FAT_CIGAM)
+		fat_read_64(h);
+	else if (!ft_strncmp((char*)h->buffer, ARMAG, SARMAG))
+		ar_read_64(h);
 	else
 	{
 		binary_is_corrupt(h, h->buffer, 5);
@@ -62,12 +73,13 @@ int				binary_read(const char *filename, t_binary *h)
 	h->size = st.st_size;
 	h->symbols = NULL;
 	h->buffer = (uint8_t*)malloc(st.st_size);
+	h->ptr = h->buffer;
 	if (h->buffer == NULL || h->buffer == MAP_FAILED)
 		return (error(fd, "allocate buffer", NULL));
 	else if (read(fd, h->buffer, h->size) < 0)
 		return (error(fd, "read", filename));
 	ret = 0;
-	if (parse_binary(h) != 0)
+	if (binary_parse(h) != 0)
 		ret = -1;
 	close(fd);
 	return (ret);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm_list_all.c                                      :+:      :+:    :+:   */
+/*   list_all_symbols.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 18:38:27 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 20:14:43 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void			sort_table(t_symb *in)
 {
 	size_t			i;
 	size_t			j;
+	int				cmp;
 	t_symb			swap;
 
 	i = 0;
@@ -24,7 +25,8 @@ static void			sort_table(t_symb *in)
 		j = i + 1;
 		while (in[j].name)
 		{
-			if (ft_strcmp(in[i].name, in[j].name) > 0)
+			cmp = ft_strcmp(in[i].name, in[j].name);
+			if (cmp > 0 || (cmp == 0 && in[i].value > in[j].value))
 			{
 				swap = in[i];
 				in[i] = in[j];
@@ -38,7 +40,9 @@ static void			sort_table(t_symb *in)
 
 static void			print_symbol(t_symb sym, size_t nbits)
 {
-	if (sym.value == 0)
+	if (sym.type_char == 'M')
+		return ;
+	if (sym.value == 0 && sym.type_char != 'T')
 		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
 	else
 		ft_putnbr_base_offset_fd(sym.value, BASE_HEX, nbits, 1);
@@ -48,30 +52,7 @@ static void			print_symbol(t_symb sym, size_t nbits)
 	ft_putstr_fd(sym.name, 1);
 	write(1, "\n", 1);
 }
-/*
-static void			print_symbol(t_symb sym, size_t nbits)
-{
-	static char		*str = "?U????????????tT???";
-	char			c;
 
-	if (sym.type & N_STAB)
-		return ;
-	if (sym.value == 0)
-		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
-	else
-		ft_putnbr_base_offset_fd(sym.value, BASE_HEX, nbits, 1);
-	c = str[sym.type];
-	if (c == 't' && (sym.sect == 10 || sym.sect == 3))
-		c = 'b';
-	else if (c == 'T' && (sym.sect == 4))
-		c = 'S';
-	write(1, " ", 1);
-	write(1, &c, 1);
-	write(1, " ", 1);
-	ft_putstr_fd(sym.name, 1);
-	write(1, "\n", 1);
-}
-*/
 static void			print_list(t_symb *list, size_t nbits)
 {
 	size_t			i;
@@ -84,22 +65,27 @@ static void			print_list(t_symb *list, size_t nbits)
 	}
 }
 
-void				nm_list_all(t_nm *data)
+void				list_all_symbols(t_binary *data)
 {
 	size_t			nbits;
 
-	if (data->bin.type_id == TYPE_ID_MACH64)
+	nbits = 16;
+	if (data->type_id == TYPE_ID_MACH64)
+		data->symbols = mach_get_symbol_list_64(data);
+	else if (data->type_id == TYPE_ID_MACH32)
 	{
-		data->bin.symbols = mach_get_symbol_list_64(&data->bin);
-		nbits = 16;
-	}
-	else if (data->bin.type_id == TYPE_ID_MACH32)
-	{
-		data->bin.symbols = mach_get_symbol_list_32(&data->bin);
+		data->symbols = mach_get_symbol_list_32(data);
 		nbits = 8;
 	}
-	else
+	else if (data->type_id == TYPE_ID_RANLIB)
+	{
+		list_archive(data);
 		return ;
-	sort_table(data->bin.symbols);
-	print_list(data->bin.symbols, nbits);
+	}
+	else if (data->type_id == TYPE_ID_FAT)
+	{
+		return ;
+	}
+	sort_table(data->symbols);
+	print_list(data->symbols, nbits);
 }

@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm.c                                               :+:      :+:    :+:   */
+/*   ft_otool.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 17:31:05 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:34:55 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <nm.h>
+#include <otool.h>
 
 static void		usage(int ret)
 {
-	ft_putstr_fd("Usage: nm [-su] <object file>\n", STDOUT_FILENO);
+	ft_putstr_fd("Usage: otool [-hlt] <object file>\n", STDOUT_FILENO);
 	exit(ret);
 }
 
-static int		parse_option(t_nm *data, char *opt)
+static int		parse_option(t_otool *data, char *opt)
 {
 	if (*opt == '-')
 	{
 		opt++;
 		while (*opt)
 		{
-			if (*opt == 'u')
-				data->opts |= SHOW_USER_ONLY;
-			else if (*opt == 's')
-				data->opts |= SHOW_SYSCALL_ONLY;
+			if (*opt == 'h')
+				data->opts |= SHOW_HEADER;
+			else if (*opt == 't')
+				data->opts |= SHOW_TEXT;
 			else
 				return (0);
 			opt++;
@@ -39,25 +39,27 @@ static int		parse_option(t_nm *data, char *opt)
 	return (1);
 }
 
-static void		nm_process(t_nm *data)
+static void		otool_process(t_otool *data)
 {
 	if (binary_read(data->filename, &data->bin) != 0)
 	{
-		write(2, "nm: error\n", 13);
 		binary_delete(&data->bin);
+		write(2, "otool: error\n", 13);
 		exit(EXIT_FAILURE);
 	}
-	nm_list_all(data);
+	if (data->opts & SHOW_HEADER)
+		otool_header(data);
+	if (data->opts & SHOW_TEXT || data->opts == 0)
+		otool_text(data);
 	binary_delete(&data->bin);
 }
 
 int				main(int argc, char **argv)
 {
-	t_nm		data;
+	t_otool		data;
 
-	printf("%x\n", N_TYPE);
 	ft_bzero(&data, sizeof(data));
-	if (argc >= 1)
+	if (argc >= 2)
 	{
 		argv++;
 		while (*argv)
@@ -67,10 +69,10 @@ int				main(int argc, char **argv)
 			argv++;
 		}
 		if (data.filename == NULL)
-			data.filename = "a.out";
+			usage(EXIT_SUCCESS);
 	}
 	else
 		usage(EXIT_SUCCESS);
-	nm_process(&data);
+	otool_process(&data);
 	return (0);
 }
