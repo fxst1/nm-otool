@@ -6,11 +6,26 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 22:04:21 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:06:48 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
+
+static void			print_symbol(t_symb sym, size_t nbits)
+{
+	if (sym.type_char == 'M')
+		return ;
+	if (sym.value == 0 && sym.type_char != 'T')
+		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
+	else
+		ft_putnbr_base_offset_fd(sym.value, BASE_HEX, nbits, 1);
+	write(1, " ", 1);
+	write(1, &sym.type_char, 1);
+	write(1, " ", 1);
+	ft_putstr_fd(sym.name, 1);
+	write(1, "\n", 1);
+}
 
 static void			sort_table(t_symb *in, size_t n_symbols)
 {
@@ -38,21 +53,6 @@ static void			sort_table(t_symb *in, size_t n_symbols)
 	}
 }
 
-static void			print_symbol(t_symb sym, size_t nbits)
-{
-	if (sym.type_char == 'M')
-		return ;
-	if (sym.value == 0 && sym.type_char != 'T')
-		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
-	else
-		ft_putnbr_base_offset_fd(sym.value, BASE_HEX, nbits, 1);
-	write(1, " ", 1);
-	write(1, &sym.type_char, 1);
-	write(1, " ", 1);
-	ft_putstr_fd(sym.name, 1);
-	write(1, "\n", 1);
-}
-
 static void			print_list(t_symb *list, size_t nbits, size_t n_symbols)
 {
 	size_t			i;
@@ -65,7 +65,7 @@ static void			print_list(t_symb *list, size_t nbits, size_t n_symbols)
 	}
 }
 
-void				list_all_symbols(t_binary *data)
+void				list_all_symbols(t_binary *data, char *path)
 {
 	size_t			nbits;
 
@@ -79,14 +79,14 @@ void				list_all_symbols(t_binary *data)
 	}
 	else if (data->type_id == TYPE_ID_RANLIB)
 	{
-		list_archive(data);
+		list_archive(data, path);
 		return ;
 	}
 	else if (data->type_id == TYPE_ID_FAT)
-	{
-		printf("%p\n", &data->content.fat.n_arch);
 		data->symbols = fat_get_symbol_list(data);
+	if (data->symbols)
+	{
+		sort_table(data->symbols, data->n_symbols);
+		print_list(data->symbols, nbits, data->n_symbols);
 	}
-	sort_table(data->symbols, data->n_symbols);
-	print_list(data->symbols, nbits, data->n_symbols);
 }

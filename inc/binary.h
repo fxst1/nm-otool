@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 21:58:01 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 15:57:37 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ int					elf_read_32(t_binary *bin);
 int					elf_read_64(t_binary *bin);
 int					fat_read_64(t_binary *bin);
 int					ar_read_64(t_binary *bin);
+
+char				sections_char(char **names);
+char				**mach_get_n_section_name(t_binary *bin, size_t section_index);
 
 t_symb				*mach_get_symbol_list_64(t_binary *bin);
 t_symb				*mach_get_symbol_list_32(t_binary *bin);

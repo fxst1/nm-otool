@@ -6,14 +6,14 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 21:28:23 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 15:57:17 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
 static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb,
-							char *name)
+							char **names)
 {
 	symb->value = syssymb->value;
 	symb->type = syssymb->type;
@@ -27,18 +27,18 @@ static void				syssymbol_to_symbol(t_nlist64 *syssymb, t_symb *symb,
 	else if ((syssymb->type & N_TYPE) == N_INDR)
 		symb->type_char = 'I';
 	else if ((syssymb->type & N_TYPE) == N_PBUD)
-		symb->type_char = 'S';
+		symb->type_char = 'U';
 	else if ((syssymb->type & N_TYPE) == N_SECT)
-		symb->type_char = 'T';
+		symb->type_char = sections_char(names);
 	else
 		symb->type_char = '?';
 	if (!(syssymb->type & N_EXT) && symb->type_char != '?' &&
 														symb->type_char != '~')
 		symb->type_char += 32;
-	(void)name;
+	free(names);
 }
 
-static void				mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
+static void				mach_get_symbols_64(t_symtab_command *sym,
 										t_symb **list, t_binary *bin)
 {
 	size_t				i;
@@ -49,13 +49,13 @@ static void				mach_get_symbols_64(uint8_t *buf, t_symtab_command *sym,
 
 	i = 0;
 	n = sym->nsyms;
-	strtab = (char*)(buf + sym->stroff);
-	symb = (t_nlist64*)(buf + sym->symoff);
+	strtab = (char*)(bin->buffer + sym->stroff);
+	symb = (t_nlist64*)(bin->buffer + sym->symoff);
 	while (i < n)
 	{
 		binary_strtab_corrupt(bin, strtab + symb->strx);
 		binary_is_corrupt(bin, symb, sizeof(t_nlist64));
-		syssymbol_to_symbol(symb, &msymb, strtab + symb->strx);
+		syssymbol_to_symbol(symb, &msymb, mach_get_n_section_name(bin, symb->sect));
 		msymb.name = strtab + symb->strx;
 		**list = msymb;
 		(*list)++;
@@ -117,7 +117,7 @@ t_symb					*mach_get_symbol_list_64(t_binary *bin)
 		if (bin->content.mach64.cmds[i].cmd == LC_SYMTAB)
 		{
 			ft_memcpy(&sym, &bin->content.mach64.cmds[i], sizeof(sym));
-			mach_get_symbols_64(bin->buffer, &sym, &tmp, bin);
+			mach_get_symbols_64(&sym, &tmp, bin);
 		}
 		i++;
 	}
