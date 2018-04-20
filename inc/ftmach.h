@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/14 17:30:22 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:04:16 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 # define FTMACH_H
 # include <sys/types.h>
 # ifndef MH_MAGIC
-#  define MH_MAGIC 0xFEEDFACEu
-#  define MH_CIGAM 0xCEFAEDFEu
-#  define MH_MAGIC_64 0xFEEDFACFu
-#  define MH_CIGAM_64 0xCFFAEDFEu
-#  define FAT_MAGIC 0xCAFEBABEu
-#  define FAT_CIGAM 0xBEBAFECAu
-#  define FAT_MAGIC_64 0xCAFEBABFu
-#  define FAT_CIGAM_64 0xBFBAFECAu
+#  define MH_MAGIC 0xFEEDFACE
+#  define MH_CIGAM 0xCEFAEDFE
+#  define MH_MAGIC_64 0xFEEDFACF
+#  define MH_CIGAM_64 0xCFFAEDFE
+#  define FAT_MAGIC 0xCAFEBABE
+#  define FAT_CIGAM 0xBEBAFECA
+#  define FAT_MAGIC_64 0xCAFEBABF
+#  define FAT_CIGAM_64 0xBFBAFECA
 #  define LC_SEGMENT 0x1
 #  define LC_SYMTAB 0x2
 #  define LC_SEGMENT_64 0x19

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/20 16:06:48 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:30:19 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static void			print_symbol(t_symb sym, size_t nbits)
 {
-	if (sym.type_char == 'M')
-		return ;
 	if (sym.value == 0 && sym.type_char != 'T')
 		ft_putstr_fd(nbits == 8 ? "        " : "                ", 1);
 	else
@@ -60,7 +58,8 @@ static void			print_list(t_symb *list, size_t nbits, size_t n_symbols)
 	i = 0;
 	while (i < n_symbols)
 	{
-		print_symbol(list[i], nbits);
+		if (list[i].type_char != '~')
+			print_symbol(list[i], nbits);
 		i++;
 	}
 }

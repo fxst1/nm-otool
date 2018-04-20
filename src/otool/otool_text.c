@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 16:56:43 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/14 17:00:56 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:10:58 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,9 @@ static void		otool_text_darwin(t_otool *data)
 	}
 }
 
-static void		otool_text_linux(t_otool *data)
-{
-	t_section_info	sect;
-	size_t			i;
-
-	get_segment_section(&data->bin, NULL, ".text", &sect);
-	if (sect.size > 0)
-	{
-		ft_putstr_fd("(.text) section\n", 1);
-		i = 0;
-		while (i < sect.size)
-		{
-			putline(data, sect, i);
-			write(1, "\n", 1);
-			i += 16;
-		}
-	}
-}
-
 void			otool_text(t_otool *data)
 {
 	if (data->bin.type_id == TYPE_ID_MACH64 ||
 		data->bin.type_id == TYPE_ID_MACH32)
 		otool_text_darwin(data);
-	else
-		otool_text_linux(data);
 }

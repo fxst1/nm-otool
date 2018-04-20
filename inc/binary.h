@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:00 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/20 15:57:37 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:07:30 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # ifndef MAP_ANONYMOUS
 #  define MAP_ANONYMOUS MAP_ANON
 # endif
-# define ELF_MAGIC 0x464c457f
 # define TYPE_ID_MACH32 1
 # define TYPE_ID_MACH64 2
 # define TYPE_ID_ELF64 3
@@ -77,28 +76,26 @@ typedef struct		s_binary
 
 uint32_t			may_swap32(int swap, uint32_t value);
 
-void				list_all_symbols(t_binary *data);
-void				list_archive(t_binary *data);
+void				list_all_symbols(t_binary *data, char *path);
+void				list_archive(t_binary *data, char *path);
 void				list_fat(t_binary *data);
 
 void				binary_strtab_corrupt(t_binary *bin, char *addr);
 void				binary_is_corrupt(t_binary *bin, void *addr, size_t nbytes);
 
 int					binary_read(const char *filename, t_binary *h);
-int					binary_parse(t_binary *h);
+int					binary_parse(t_binary *h, int force_swap);
 void				binary_delete(t_binary *bin);
 
 void				mach_clear_32(t_mach32 mach);
 void				mach_clear_64(t_mach64 mach);
-void				elf_clear_32(t_elf32 mach);
-void				elf_clear_64(t_elf64 mach);
 
-int					mach_read_32(t_binary *bin);
-int					mach_read_64(t_binary *bin);
-int					elf_read_32(t_binary *bin);
-int					elf_read_64(t_binary *bin);
+int					mach_read_32(t_binary *bin, int force_swap);
+int					mach_read_64(t_binary *bin, int force_swap);
 int					fat_read_64(t_binary *bin);
 int					ar_read_64(t_binary *bin);
+
+char				*ar_get_name(t_ar_header *hobj);
 
 char				sections_char(char **names);
 char				**mach_get_n_section_name(t_binary *bin, size_t section_index);
@@ -106,7 +103,6 @@ char				**mach_get_n_section_name(t_binary *bin, size_t section_index);
 t_symb				*mach_get_symbol_list_64(t_binary *bin);
 t_symb				*mach_get_symbol_list_32(t_binary *bin);
 t_symb				*fat_get_symbol_list(t_binary *bin);
-t_symb				*elf_get_symbol_list_64(t_binary *bin);
 
 void				get_segment_section(t_binary *bin, char *segname,
 										char *sectname, t_section_info *sect);

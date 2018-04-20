@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:37:29 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/20 13:37:08 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:55:39 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static t_binary		*get_arch(t_fat *fat)
 			return (&fat->contents[i]);
 		else
 			return (NULL);
+		i++;
 	}
 	return (NULL);
 }

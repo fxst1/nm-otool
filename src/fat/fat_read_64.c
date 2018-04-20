@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:35:25 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/20 12:43:05 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:49:28 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int				fat_read_64(t_binary *bin)
 		fat->archs[i].offset = may_swap32(bin->swap, fat->archs[i].offset);
 		ft_memcpy(&fat->contents[i], bin, sizeof(t_binary));
 		fat->contents[i].buffer = bin->buffer + fat->archs[i].offset;
-		binary_parse(&fat->contents[i]);
+		binary_parse(&fat->contents[i], 0);
 		i++;
 		offset += sizeof(t_fat_arch);
 	}

@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:30:18 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/17 19:20:05 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:45:04 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct				s_ar_header
 typedef struct				s_ar_object
 {
 	char					*name;
+	char					*objname;
 	t_ar_header				header;
 	t_ranlib				info;
 	uint8_t					type_id;

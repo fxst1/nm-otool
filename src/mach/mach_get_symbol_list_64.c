@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/20 15:57:17 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:50:41 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void				mach_get_symbols_64(t_symtab_command *sym,
 	{
 		binary_strtab_corrupt(bin, strtab + symb->strx);
 		binary_is_corrupt(bin, symb, sizeof(t_nlist64));
-		syssymbol_to_symbol(symb, &msymb, mach_get_n_section_name(bin, symb->sect));
+		syssymbol_to_symbol(symb, &msymb,
+				mach_get_n_section_name(bin, symb->sect));
 		msymb.name = strtab + symb->strx;
 		**list = msymb;
 		(*list)++;
@@ -85,7 +86,7 @@ static t_symb			*alloc_symbols(t_binary *bin, size_t size)
 	{
 		cmd = bin->content.mach64.cmds[i];
 		if (cmd.cmd == LC_SYMTAB)
-			size += get_size(&cmd);
+			size += may_swap32(bin->swap, get_size(&cmd));
 		i++;
 	}
 	bin->n_symbols = size;

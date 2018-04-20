@@ -6,11 +6,23 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:35:25 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/17 18:43:22 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 21:04:58 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
+
+static t_binary	*alloc_new_binary(t_binary *bin, size_t size_name,
+									size_t offset)
+{
+	t_binary	*new_bin;
+
+	new_bin = (t_binary*)malloc(sizeof(t_binary));
+	ft_memcpy(new_bin, bin, sizeof(t_binary));
+	printf("%zx\n", offset + size_name + sizeof(t_ar_header));
+	new_bin->buffer = bin->buffer + offset + size_name + sizeof(t_ar_header);
+	return (new_bin);
+}
 
 static void		read_objects(t_binary *bin, t_ar *ar)
 {
@@ -29,14 +41,12 @@ static void		read_objects(t_binary *bin, t_ar *ar)
 		ar->contents[i].name = ar->strtab + ar->contents[i].info.strx + 4;
 		ar->contents[i].header = *((t_ar_header*)(bin->buffer +
 									ar->contents[i].info.offset));
-		size_name = (int)atoi((char*)ar->contents[i].header.name + 3);
-		ar->contents[i].bin = (t_binary*)malloc(sizeof(t_binary));
-		ft_memcpy(ar->contents[i].bin, bin, sizeof(t_binary));
-		ar->contents[i].bin->buffer = bin->buffer +
-									ar->contents[i].info.offset +
-									size_name +
-									sizeof(t_ar_header);
-		binary_parse(ar->contents[i].bin);
+		ar->contents[i].objname = ar_get_name(((t_ar_header*)(bin->buffer +
+									ar->contents[i].info.offset)));
+		size_name = (int)ft_atoi((char*)ar->contents[i].header.name + 3);
+		ar->contents[i].bin = alloc_new_binary(bin, size_name,
+										ar->contents[i].info.offset);
+		binary_parse(ar->contents[i].bin, 0);
 		offset += sizeof(t_ranlib);
 		i++;
 	}
@@ -69,7 +79,7 @@ static void		read_header(t_binary *bin, t_ar *ar)
 	size_t		size_name;
 
 	ar->header = *((t_ar_header*)(bin->buffer + 8));
-	size_name = (size_t)atoi((char*)bin->buffer + 11);
+	size_name = (size_t)ft_atoi((char*)bin->buffer + 11);
 	ar->start_content = 8 + sizeof(t_ar_header) + size_name;
 	binary_is_corrupt(bin, bin->buffer + ar->start_content, 4);
 }

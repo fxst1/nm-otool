@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 17:01:04 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/14 17:01:05 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:10:45 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@ void		otool_header(t_otool *data)
 		show_mach32_header(&data->bin.content.mach32);
 	else if (data->bin.type_id == TYPE_ID_MACH64)
 		show_mach64_header(&data->bin.content.mach64);
-	else if (data->bin.type_id == TYPE_ID_ELF32 ||
-			data->bin.type_id == TYPE_ID_ELF64)
-		ft_putstr_fd("Elf header\n", 1);
 	else
 		ft_putstr_fd("undefined format\n", 1);
 	(void)data;

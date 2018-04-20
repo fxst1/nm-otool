@@ -6,11 +6,18 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 14:53:31 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/20 15:52:49 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 17:55:14 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
+
+static char		**set_names(char **names, char *sectname, char *segname)
+{
+	names[1] = sectname;
+	names[0] = segname;
+	return (names);
+}
 
 static char		**mach64(t_mach64 *macho, size_t section_index, char **names)
 {
@@ -29,9 +36,9 @@ static char		**mach64(t_mach64 *macho, size_t section_index, char **names)
 			{
 				if (section_index == index)
 				{
-					names[1] = macho->cmds[i].sections[j].sectname;
-					names[0] = macho->cmds[i].sections[j].segname;
-					return (names);
+					return (set_names(names,
+						macho->cmds[i].sections[j].sectname,
+						macho->cmds[i].sections[j].segname));
 				}
 				index++;
 				j++;
@@ -59,9 +66,9 @@ static char		**mach32(t_mach32 *macho, size_t section_index, char **names)
 			{
 				if (section_index == index)
 				{
-					names[1] = macho->cmds[i].sections[j].sectname;
-					names[0] = macho->cmds[i].sections[j].segname;
-					return (names);
+					return (set_names(names,
+						macho->cmds[i].sections[j].sectname,
+						macho->cmds[i].sections[j].segname));
 				}
 				index++;
 				j++;
@@ -74,7 +81,7 @@ static char		**mach32(t_mach32 *macho, size_t section_index, char **names)
 
 char			**mach_get_n_section_name(t_binary *bin, size_t section_index)
 {
-	char		**names = NULL;
+	char		**names;
 
 	names = malloc(sizeof(char*) * 2);
 	names[0] = "";

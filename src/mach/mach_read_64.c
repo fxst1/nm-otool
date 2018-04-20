@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 16:40:20 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/04/20 14:11:37 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:51:34 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static size_t				read_sections(uint8_t *buf,
 	size_t					i;
 
 	i = 0;
+	cmd->nsects = may_swap32(bin->swap, cmd->nsects);
 	cmd->sections = (t_mach64_section*)malloc(sizeof(t_mach64_section) *
 												(cmd->nsects + 1));
 	if (!cmd->sections)
@@ -44,6 +45,8 @@ static size_t				get_header(t_binary *h)
 
 	binary_is_corrupt(h, h->buffer, sizeof(t_mach64_header));
 	ft_memcpy(&h->content.mach64.header, h->buffer, sizeof(t_mach64_header));
+	h->content.mach64.header.ncmds = may_swap32(h->swap,
+												h->content.mach64.header.ncmds);
 	n = h->content.mach64.header.ncmds;
 	h->content.mach64.cmds = (t_segment64_command*)malloc(
 										sizeof(t_segment64_command) * (n + 1));
@@ -57,7 +60,7 @@ static size_t				get_header(t_binary *h)
 	return (n);
 }
 
-int							mach_read_64(t_binary *h)
+int							mach_read_64(t_binary *h, int force_swap)
 {
 	size_t					i;
 	size_t					n;
@@ -65,9 +68,10 @@ int							mach_read_64(t_binary *h)
 	t_segment64_command		seg;
 
 	i = 0;
+	h->type_id = TYPE_ID_MACH64;
+	h->swap = (*(uint32_t*)h->buffer == MH_CIGAM_64);
 	n = get_header(h);
 	buf = h->buffer + sizeof(t_mach64_header);
-	h->type_id = TYPE_ID_MACH64;
 	while (i < n)
 	{
 		binary_is_corrupt(h, buf, sizeof(t_segment64_command));
@@ -81,5 +85,6 @@ int							mach_read_64(t_binary *h)
 		buf += seg.cmdsize ? seg.cmdsize : sizeof(t_segment64_command);
 		i++;
 	}
+	(void)force_swap;
 	return (0);
 }

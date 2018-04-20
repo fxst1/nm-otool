@@ -6,13 +6,39 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/13 12:47:08 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 21:28:47 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 20:29:37 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-static void				mach_get_symbols_32(uint8_t *buf, t_symtab_command *sym,
+static void				syssymbol_to_symbol(t_nlist32 *syssymb, t_symb *symb,
+							char **names)
+{
+	symb->value = syssymb->value;
+	symb->type = syssymb->type;
+	symb->sect = syssymb->sect;
+	if (syssymb->type & N_STAB)
+		symb->type_char = '~';
+	else if ((syssymb->type & N_TYPE) == N_UNDF)
+		symb->type_char = 'U';
+	else if ((syssymb->type & N_TYPE) == N_ABS)
+		symb->type_char = 'A';
+	else if ((syssymb->type & N_TYPE) == N_INDR)
+		symb->type_char = 'I';
+	else if ((syssymb->type & N_TYPE) == N_PBUD)
+		symb->type_char = 'U';
+	else if ((syssymb->type & N_TYPE) == N_SECT)
+		symb->type_char = sections_char(names);
+	else
+		symb->type_char = '?';
+	if (!(syssymb->type & N_EXT) && symb->type_char != '?' &&
+														symb->type_char != '~')
+		symb->type_char += 32;
+	free(names);
+}
+
+static void				mach_get_symbols_32(t_symtab_command *sym,
 										t_symb **list, t_binary *bin)
 {
 	size_t				i;
@@ -23,16 +49,15 @@ static void				mach_get_symbols_32(uint8_t *buf, t_symtab_command *sym,
 
 	i = 0;
 	n = sym->nsyms;
-	strtab = (char*)(buf + sym->stroff);
-	symb = (t_nlist32*)(buf + sym->symoff);
+	strtab = (char*)(bin->buffer + may_swap32(bin->swap, sym->stroff));
+	symb = (t_nlist32*)(bin->buffer + may_swap32(bin->swap, sym->stroff));
 	while (i < n)
 	{
-		binary_strtab_corrupt(bin, strtab + symb->strx);
-		binary_is_corrupt(bin, symb, sizeof(t_nlist32));
-		msymb.value = symb->value;
-		msymb.type = symb->type;
-		msymb.sect = symb->sect;
-		msymb.name = strtab + symb->strx;
+		binary_strtab_corrupt(bin, strtab + may_swap32(bin->swap, symb->strx));
+		binary_is_corrupt(bin, symb, sizeof(t_nlist64));
+		syssymbol_to_symbol(symb, &msymb,
+				mach_get_n_section_name(bin, symb->sect));
+		msymb.name = strtab + may_swap32(bin->swap, symb->strx);
 		**list = msymb;
 		(*list)++;
 		i++;
@@ -60,8 +85,8 @@ static t_symb			*alloc_symbols(t_binary *bin, size_t size)
 	while (i < n)
 	{
 		cmd = bin->content.mach32.cmds[i];
-		if (cmd.cmd == LC_SYMTAB)
-			size += get_size(&cmd);
+		if (may_swap32(bin->swap, cmd.cmd) == LC_SYMTAB)
+			size += may_swap32(bin->swap, get_size(&cmd));
 		i++;
 	}
 	bin->n_symbols = size;
@@ -93,7 +118,7 @@ t_symb					*mach_get_symbol_list_32(t_binary *bin)
 		if (bin->content.mach32.cmds[i].cmd == LC_SYMTAB)
 		{
 			ft_memcpy(&sym, &bin->content.mach32.cmds[i], sizeof(sym));
-			mach_get_symbols_32(bin->buffer, &sym, &tmp, bin);
+			mach_get_symbols_32(&sym, &tmp, bin);
 		}
 		i++;
 	}

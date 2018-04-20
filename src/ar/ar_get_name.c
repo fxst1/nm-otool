@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   elf_read_32.c                                      :+:      :+:    :+:   */
+/*   ar_get_name.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 10:57:32 by fxst1             #+#    #+#             */
-/*   Updated: 2018/03/12 16:12:17 by fxst1            ###   ########.fr       */
+/*   Created: 2018/04/20 16:42:24 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/04/20 16:47:28 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary.h>
 
-int			elf_read_32(t_binary *h)
+char				*ar_get_name(t_ar_header *hobj)
 {
-	return (0);
-	(void)h;
+	char			*ret;
+
+	ret = (char*)hobj->name;
+	if (!ft_strncmp(ret, "#1/", 3))
+		return ((char*)((uint8_t*)hobj) + sizeof(t_ar_header));
+	else
+		return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/17 19:42:16 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/04/20 19:42:12 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void		nm_process(t_nm *data)
 		binary_delete(&data->bin);
 		exit(EXIT_FAILURE);
 	}
-	list_all_symbols(&data->bin);
+	list_all_symbols(&data->bin, data->filename);
 	binary_delete(&data->bin);
 }
 
