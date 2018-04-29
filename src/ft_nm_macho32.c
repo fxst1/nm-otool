@@ -13,13 +13,11 @@ int				look_symtab_32(t_nm_otool *data, uint8_t *buf, t_freader *reader)
 
 int				load_symtab_32(t_nm_otool *data, t_freader *reader, uint8_t *buf)
 {
-	int			ret;
 	uint32_t	i;
 	uint32_t	type;
 	uint32_t	size;
 
 	i = 0;
-	ret = 1;
 	while (i < reader->n_load_commands)
 	{
 		if (binary_is_corrupt(data, buf, 8))
@@ -36,14 +34,11 @@ int				load_symtab_32(t_nm_otool *data, t_freader *reader, uint8_t *buf)
 			{
 				if (look_symtab_32(data, buf, reader) != 0)
 					return (1);
-				ret = 0;
 			}
 			buf += size;
 		}
 		i++;
 	}
-	if (ret)
-		return (corruption_error(data, "No LC_SYMTAB\n"));
 	return (0);
 }
 

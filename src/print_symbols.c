@@ -32,10 +32,14 @@ int			compare_symbols(void *p1, void *p2)
 {
 	t_symbol *a;
 	t_symbol *b;
+	int		ret;
 
 	a = (t_symbol*)p1;
 	b = (t_symbol*)p2;
-	return (strcmp(a->symbname, b->symbname));
+	ret = ft_strcmp(a->symbname, b->symbname);
+	if (ret == 0)
+		return (a->value - b->value);
+	return (ret);
 }
 
 void		iter_symbols_default(void *nbits, t_list *lst)

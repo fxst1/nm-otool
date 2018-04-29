@@ -36,23 +36,23 @@ int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 {
 	t_list		*next;
 	t_object	*o;
-	int			ok;
+	int			err;
 	uint32_t	size_name;
-	uint32_t	value;
+	uintptr_t	value;
 
 	value = 0;
-	ok = 1;
+	err = 0;
 	next = NULL;
 	while (objs)
 	{
 		next = objs->next;
 		o = (t_object*)objs->content;
 		size_name = get_size_name(start + o->offset);
-		if (ok && value != o->offset)
+		if (!err && value != (uintptr_t)start + o->offset + 0x3C + size_name)
 		{
 			data->print = 0;
-			ok |= ft_nm(data, start + o->offset + 0x3C + size_name);
-			if (ok)
+			err = ft_nm(data, start + o->offset + 0x3C + size_name);
+			if (!err)
 			{
 				write(STDOUT_FILENO, "\n", 1);
 				ft_putstr_fd(data->filename, STDOUT_FILENO);
@@ -62,13 +62,15 @@ int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 				ft_nm_print(data);
 				ft_nm_clear(data);
 			}
+			else
+				return (1);
 		}
-		value = o->offset;
+		value = (uintptr_t)start + o->offset + 0x3C + size_name;
 		free(o);
 		free(objs);
 		objs = next;
 	}
-	return (ok);
+	return (err);
 }
 
 int			ft_nm_ar(t_nm_otool *data, uint8_t *buf)
