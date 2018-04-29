@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/28 20:13:09 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/29 12:49:58 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int		parse_option(t_nm_otool *data, char *opt)
 
 static void		nm_process(t_nm_otool *data)
 {
+	data->print = 1;
 	if (load_file(data) != 0)
 		write(2, "nm: error\n", 10);
 	else

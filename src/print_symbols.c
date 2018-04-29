@@ -45,7 +45,7 @@ void		iter_symbols_default(void *nbits, t_list *lst)
 	if (s->value == 0 && s->character != 'T')
 		ft_putstr_fd((size_t)nbits == 8 ? "        " : "                ", STDOUT_FILENO);
 	else
-		ft_putnbr_base_offset_fd(s->value, "0123456789ABCDEF", (size_t)nbits, STDOUT_FILENO);
+		ft_putnbr_base_offset_fd(s->value, "0123456789abcdef", (size_t)nbits, STDOUT_FILENO);
 	write(STDOUT_FILENO, " ", 1);
 	write(STDOUT_FILENO, &s->character, 1);
 	write(STDOUT_FILENO, " ", 1);

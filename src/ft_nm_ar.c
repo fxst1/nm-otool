@@ -48,15 +48,19 @@ int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 		next = objs->next;
 		o = (t_object*)objs->content;
 		size_name = get_size_name(start + o->offset);
-		if (value != o->offset)
+		if (ok && value != o->offset)
 		{
-			write(STDOUT_FILENO, "\n", 1);
-			ft_putstr_fd(data->filename, STDOUT_FILENO);
-			write(STDOUT_FILENO, "(", 1);
-			ft_putstr_fd((char*)start + o->offset + 0x3C, STDOUT_FILENO);
-			write(STDOUT_FILENO, "):\n", 3);
-			if (ok)
 			ok |= ft_nm(data, start + o->offset + 0x3C + size_name);
+			if (ok)
+			{
+				write(STDOUT_FILENO, "\n", 1);
+				ft_putstr_fd(data->filename, STDOUT_FILENO);
+				write(STDOUT_FILENO, "(", 1);
+				ft_putstr_fd((char*)start + o->offset + 0x3C, STDOUT_FILENO);
+				write(STDOUT_FILENO, "):\n", 3);
+				ft_nm_print(data);
+				ft_nm_clear(data);				
+			}
 		}
 		value = o->offset;
 		free(o);

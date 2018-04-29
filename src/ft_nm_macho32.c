@@ -114,8 +114,6 @@ int				load_symbols_32(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 		buf += 0xC;
 		i++;
 	}
-	if (data->opts == 0)
-		ft_lstiter2(data->symbols, &iter_symbols_default, (void*)8);
 	return (0);
 }
 
@@ -137,5 +135,6 @@ int 			ft_nm_macho32(t_nm_otool *data, uint8_t *buf)
 		if (load_symbols_32(data, &reader, buf + reader.symtab_offset, buf) != 0)
 			return (1);
 	}
+	ft_nm_print(data);
 	return (0);
 }

@@ -61,7 +61,8 @@ typedef struct			s_object
 
 typedef struct			s_nm_otool
 {
-	int					bits;
+	int					nbits;
+	int					print;
 	int					swap_bytes;
 	char				*filename;
 	uint8_t				*buffer;
@@ -90,6 +91,8 @@ int 					ft_nm_macho64(t_nm_otool *data, uint8_t *buf);
 int 					ft_nm_macho32(t_nm_otool *data, uint8_t *buf);
 int 					ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_nm_ar(t_nm_otool *data, uint8_t *buf);
+void					ft_nm_clear(t_nm_otool *data);
+void					ft_nm_print(t_nm_otool *data);
 
 int						display_error(t_nm_otool *data, const int errtype, const char *errmsg);
 int						corruption_error(t_nm_otool *data, const char *errmsg);
