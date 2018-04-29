@@ -43,6 +43,7 @@ clean:
 	@rm -rf $(OBJDIR)
 
 fclean:
+	make -C libft fclean
 	@rm -rf $(OBJDIR)
 	@rm -rf $(NM)
 	@rm -rf $(OTOOL)

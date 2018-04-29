@@ -52,7 +52,7 @@ int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 		{
 			data->print = 0;
 			ok |= ft_nm(data, start + o->offset + 0x3C + size_name);
-			if (ok && data->symbols)
+			if (ok)
 			{
 				write(STDOUT_FILENO, "\n", 1);
 				ft_putstr_fd(data->filename, STDOUT_FILENO);
