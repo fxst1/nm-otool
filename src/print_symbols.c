@@ -47,6 +47,8 @@ void		iter_symbols_default(void *nbits, t_list *lst)
 	t_symbol *s;
 
 	s = (t_symbol*)lst->content;
+	if (s->type & N_STAB)
+		return ;
 	set_symbol_char(s);
 	if (s->value == 0 && s->character != 'T')
 		ft_putstr_fd((size_t)nbits == 8 ? "        " : "                ", STDOUT_FILENO);
