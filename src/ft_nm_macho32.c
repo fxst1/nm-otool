@@ -135,6 +135,5 @@ int 			ft_nm_macho32(t_nm_otool *data, uint8_t *buf)
 		if (load_symbols_32(data, &reader, buf + reader.symtab_offset, buf) != 0)
 			return (1);
 	}
-	ft_nm_print(data);
 	return (0);
 }

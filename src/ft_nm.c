@@ -57,7 +57,6 @@ int 			ft_nm(t_nm_otool *data, uint8_t *buf)
 	{
 		ft_nm_print(data);
 		ft_nm_clear(data);
-		data->symbols = NULL;
 	}
 	return (0);
 }
