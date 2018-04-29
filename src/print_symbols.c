@@ -9,6 +9,8 @@ void		set_symbol_char(t_symbol *s)
 			s->character = 'B';
 		else if (ft_strcmp(s->segname, "__text") == 0)
 			s->character = 'T';
+		else if (ft_strcmp(s->segname, "__data") == 0)
+			s->character = 'D';
 		else
 			s->character = 'S';
 	}
