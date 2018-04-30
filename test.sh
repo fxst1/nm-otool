@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for file in /usr/lib/*
+for file in $1
 do
 
 	echo $file;

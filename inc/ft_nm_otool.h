@@ -9,7 +9,10 @@
 # include <stdint.h>
 # include <sys/stat.h>
 # include <sys/mman.h>
+# define BASE_HEX "0123456789abcdef"
 # define ERR_CORRUPT_FILE 0
+# define SHOW_DEFAULT 0
+# define SHOW_CHARACTERS 1
 # define SHOW_ALL 1
 # define SHOW_UNDEF_ONLY 2
 # ifndef LC_SEGMENT_64
@@ -51,6 +54,8 @@ typedef struct			s_freader
 	size_t				symtab_offset;
 	size_t				strtab_size;
 	size_t				strtab_offset;
+	size_t				text_offset;
+	size_t				text_size;
 }						t_freader;
 
 typedef struct			s_object
@@ -68,10 +73,12 @@ typedef struct			s_nm_otool
 	uint8_t				*buffer;
 	size_t				buffer_size;
 	int					opts;
-	t_list				*objects;
 	t_list				*symbols;
+	char				*section;
+	char				*segment;
 }						t_nm_otool;
 
+void					*ft_print_memory(const void *addr, size_t size);
 void					ft_putnbr_base_fd(long nb, char *base, int fd);
 void					ft_putnbr_base_offset_fd(long nb, char *base, size_t offset,
 											int fd);
@@ -93,6 +100,14 @@ int 					ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_nm_ar(t_nm_otool *data, uint8_t *buf);
 void					ft_nm_clear(t_nm_otool *data);
 void					ft_nm_print(t_nm_otool *data);
+
+int						ft_otool_print_section(t_nm_otool *data, t_freader *reader, uint8_t *start);
+
+int						ft_otool(t_nm_otool *data, uint8_t *buf);
+int 					ft_otool_macho64(t_nm_otool *data, uint8_t *buf);
+int 					ft_otool_macho32(t_nm_otool *data, uint8_t *buf);
+int 					ft_otool_fat(t_nm_otool *data, uint8_t *buf, int swap);
+int						ft_otool_ar(t_nm_otool *data, uint8_t *buf);
 
 int						display_error(t_nm_otool *data, const int errtype, const char *errmsg);
 int						corruption_error(t_nm_otool *data, const char *errmsg);
