@@ -18,11 +18,7 @@ static int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 		size_name = get_size_name(start + o->offset);
 		if (!err && value != (uintptr_t)start + o->offset + 0x3C + size_name)
 		{
-			data->print = 0;
-			write(STDOUT_FILENO, "\n", 1);
-			ft_putstr_fd(data->filename, STDOUT_FILENO);
-			write(STDOUT_FILENO, "(", 1);
-			ft_putstr_fd((char*)start + o->offset + 0x3C, STDOUT_FILENO);
+			data->objname = (char*)start + o->offset + 0x3C;
 			write(STDOUT_FILENO, "):\n", 3);
 			err = ft_otool(data, start + o->offset + 0x3C + size_name);
 			if (err)

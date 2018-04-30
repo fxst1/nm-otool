@@ -15,6 +15,7 @@
 # define SHOW_CHARACTERS 1
 # define SHOW_ALL 1
 # define SHOW_UNDEF_ONLY 2
+# define MASK_64_BITS 0xFFFFFFFF
 # ifndef LC_SEGMENT_64
 #  define CPU_TYPE_X86_64 0x7000001
 #  define CPU_TYPE_I386 0x7000000
@@ -70,6 +71,7 @@ typedef struct			s_nm_otool
 	int					print;
 	int					swap_bytes;
 	char				*filename;
+	char				*objname;
 	uint8_t				*buffer;
 	size_t				buffer_size;
 	int					opts;
@@ -79,8 +81,8 @@ typedef struct			s_nm_otool
 }						t_nm_otool;
 
 void					*ft_print_memory(const void *addr, size_t size);
-void					ft_putnbr_base_fd(uint64_t nb, char *base, int fd);
-void					ft_putnbr_base_offset_fd(uint64_t nb, char *base, size_t offset,
+void					ft_putnbr_base_fd(int64_t nb, char *base, int fd);
+void					ft_putnbr_base_offset_fd(int64_t nb, char *base, size_t offset,
 											int fd);
 unsigned int			ft_swap_bytes(unsigned int bytes);
 void					ft_lstiter2(t_list *lst, void (*fct)(void*, t_list*),

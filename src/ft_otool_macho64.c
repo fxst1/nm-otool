@@ -15,7 +15,7 @@ int			get_segment_64(t_nm_otool *data, uint8_t *buf, t_freader *reader)
 			ft_strcmp(data->segment, (char*)tmp + 0x10) == 0)
 		{
 			reader->text_size = *(uint32_t*)(tmp + 0x28);
-			reader->text_offset = *(uint32_t*)(tmp + 0x30);
+			reader->text_offset = *(uint64_t*)(tmp + 0x20);
 			return (0);
 		}
 		tmp += 0x50;
