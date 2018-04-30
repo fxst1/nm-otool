@@ -19,18 +19,13 @@ static int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 		if (!err && value != (uintptr_t)start + o->offset + 0x3C + size_name)
 		{
 			data->print = 0;
-			err = ft_nm(data, start + o->offset + 0x3C + size_name);
-			if (!err)
-			{
-				write(STDOUT_FILENO, "\n", 1);
-				ft_putstr_fd(data->filename, STDOUT_FILENO);
-				write(STDOUT_FILENO, "(", 1);
-				ft_putstr_fd((char*)start + o->offset + 0x3C, STDOUT_FILENO);
-				write(STDOUT_FILENO, "):\n", 3);
-				ft_nm_print(data);
-				ft_nm_clear(data);
-			}
-			else
+			write(STDOUT_FILENO, "\n", 1);
+			ft_putstr_fd(data->filename, STDOUT_FILENO);
+			write(STDOUT_FILENO, "(", 1);
+			ft_putstr_fd((char*)start + o->offset + 0x3C, STDOUT_FILENO);
+			write(STDOUT_FILENO, "):\n", 3);
+			err = ft_otool(data, start + o->offset + 0x3C + size_name);
+			if (err)
 				return (1);
 		}
 		value = (uintptr_t)start + o->offset + 0x3C + size_name;
@@ -41,7 +36,7 @@ static int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 	return (err);
 }
 
-int			ft_nm_ar(t_nm_otool *data, uint8_t *buf)
+int			ft_otool_ar(t_nm_otool *data, uint8_t *buf)
 {
 	uint32_t	i;
 	uint32_t	symbol_size;

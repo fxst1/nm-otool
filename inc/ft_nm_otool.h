@@ -54,7 +54,7 @@ typedef struct			s_freader
 	size_t				symtab_offset;
 	size_t				strtab_size;
 	size_t				strtab_offset;
-	size_t				text_offset;
+	uint64_t			text_offset;
 	size_t				text_size;
 }						t_freader;
 
@@ -79,8 +79,8 @@ typedef struct			s_nm_otool
 }						t_nm_otool;
 
 void					*ft_print_memory(const void *addr, size_t size);
-void					ft_putnbr_base_fd(long nb, char *base, int fd);
-void					ft_putnbr_base_offset_fd(long nb, char *base, size_t offset,
+void					ft_putnbr_base_fd(uint64_t nb, char *base, int fd);
+void					ft_putnbr_base_offset_fd(uint64_t nb, char *base, size_t offset,
 											int fd);
 unsigned int			ft_swap_bytes(unsigned int bytes);
 void					ft_lstiter2(t_list *lst, void (*fct)(void*, t_list*),
@@ -108,6 +108,10 @@ int 					ft_otool_macho64(t_nm_otool *data, uint8_t *buf);
 int 					ft_otool_macho32(t_nm_otool *data, uint8_t *buf);
 int 					ft_otool_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_otool_ar(t_nm_otool *data, uint8_t *buf);
+
+int						compare_ar_symbols(void *p1, void *p2);
+uint32_t				get_size_name(uint8_t *buf);
+int						read_object(t_nm_otool *data, uint8_t *buf, t_list **root);
 
 int						display_error(t_nm_otool *data, const int errtype, const char *errmsg);
 int						corruption_error(t_nm_otool *data, const char *errmsg);

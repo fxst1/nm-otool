@@ -1,18 +1,12 @@
 #include "ft_nm_otool.h"
 
-void	ft_putnbr_base_fd(long nb, char *base, int fd)
+void	ft_putnbr_base_fd(uint64_t nb, char *base, int fd)
 {
-	int length;
+	size_t	length;
 
 	length = ft_strlen(base);
 	if (length > 0)
 	{
-		if (nb < 0)
-		{
-			if (length == 10)
-				write(fd, "-", 1);
-			nb = -nb;
-		}
 		if (nb >= length)
 		{
 			ft_putnbr_base_fd(nb / length, base, fd);
@@ -23,15 +17,13 @@ void	ft_putnbr_base_fd(long nb, char *base, int fd)
 	}
 }
 
-static size_t	getoffset(long nb, char *base, size_t *n)
+static size_t	getoffset(uint64_t nb, char *base, size_t *n)
 {
-	int length;
+	size_t		length;
 
 	length = ft_strlen(base);
 	if (length > 0)
 	{
-		if (nb < 0)
-			nb = -nb;
 		if (nb >= length)
 		{
 			getoffset(nb / length, base, n);
@@ -43,14 +35,20 @@ static size_t	getoffset(long nb, char *base, size_t *n)
 	return (*n);
 }
 
-void			ft_putnbr_base_offset_fd(long nb, char *base, size_t offset,
+void			ft_putnbr_base_offset_fd(uint64_t nb, char *base, size_t offset,
 											int fd)
 {
 	size_t		tmp;
 
 	tmp = 0;
-	offset = offset - getoffset(nb, base, &tmp);
-	while (offset--)
-		write(fd, "0", 1);
+	getoffset(nb, base, &tmp);
+	while (tmp < offset)
+	{
+		if (tmp == 10)
+			write(fd, "1", 1);
+		else
+			write(fd, "0", 1);
+		tmp++;
+	}
 	ft_putnbr_base_fd(nb, base, fd);
 }
