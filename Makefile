@@ -12,7 +12,7 @@
 CC = cc
 FLAGS = -Wall -Wextra -Werror -g
 INC = -I inc/ -I libft/
-LIBFT = ./libft.a
+LIBFT = ./libft/libft.a
 
 OBJDIR = ./obj/
 
@@ -42,15 +42,12 @@ $(LIBFT):
 clean:
 	@rm -rf $(OBJDIR)
 
-fclean:
+cleanlib:
 	make -C libft fclean
+
+fclean:
 	@rm -rf $(OBJDIR)
 	@rm -rf $(NM)
 	@rm -rf $(OTOOL)
 
 re: fclean all
-
-push: fclean
-	git add --all
-	git commit -am "fix"
-	git push

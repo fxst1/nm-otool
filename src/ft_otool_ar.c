@@ -19,7 +19,6 @@ static int			print_objects(t_nm_otool *data, t_list *objs, uint8_t *start)
 		if (!err && value != (uintptr_t)start + o->offset + 0x3C + size_name)
 		{
 			data->objname = (char*)start + o->offset + 0x3C;
-			write(STDOUT_FILENO, "):\n", 3);
 			err = ft_otool(data, start + o->offset + 0x3C + size_name);
 			if (err)
 				return (1);
@@ -57,6 +56,8 @@ int			ft_otool_ar(t_nm_otool *data, uint8_t *buf)
 			return (1);
 		i += 0x8;
 	}
+	write(STDOUT_FILENO, "Archive : ", 10);
+	ft_putendl_fd(data->filename, STDOUT_FILENO);
 	print_objects(data, objs, buf);
 	return (0);
 }

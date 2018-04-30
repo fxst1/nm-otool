@@ -55,7 +55,8 @@ typedef struct			s_freader
 	size_t				symtab_offset;
 	size_t				strtab_size;
 	size_t				strtab_offset;
-	uint64_t			text_offset;
+	uint64_t			text_addr;
+	uint32_t			text_offset;
 	size_t				text_size;
 }						t_freader;
 

@@ -5,15 +5,16 @@ static void		putline(t_nm_otool *data, t_freader *reader, uint8_t *buf, size_t i
 	size_t		j;
 
 	j = 0;
-	ft_putnbr_base_offset_fd((uint64_t)(reader->text_offset + i), BASE_HEX, data->nbits,
+	ft_putnbr_base_offset_fd(reader->text_addr + i, BASE_HEX, data->nbits,
 		STDOUT_FILENO);
+	write(STDOUT_FILENO, " ", 1);
 	while (j < 16 && i + j < reader->text_size)
 	{
-		write(STDOUT_FILENO, " ", 1);
 		if (buf[(reader->text_offset & MASK_64_BITS) + i + j] <= 0xf)
 			ft_putstr_fd("0", STDOUT_FILENO);
 		ft_putnbr_base_fd(buf[(reader->text_offset & MASK_64_BITS) + i + j],
 			BASE_HEX, STDOUT_FILENO);
+		write(STDOUT_FILENO, " ", 1);
 		j++;
 	}
 	if (data->opts & SHOW_CHARACTERS)
@@ -40,23 +41,29 @@ static void		putchars(t_nm_otool *data, t_freader *reader, uint8_t *buf, size_t 
 	(void)data;
 }
 
-int			ft_otool_print_section(t_nm_otool *data, t_freader *reader, uint8_t *start)
+static void	print_header(t_nm_otool *data)
 {
-	size_t	i;
-
-	i = 0;
 	ft_putstr_fd(data->filename, STDOUT_FILENO);
 	if (data->objname)
 	{
 		write(STDOUT_FILENO, "(", 1);
 		ft_putstr_fd(data->objname, STDOUT_FILENO);
-		write(STDOUT_FILENO, ")\n", 2);
+		write(STDOUT_FILENO, ")", 1);
 	}
+	write(STDOUT_FILENO, ":\n", 2);
 	write(STDOUT_FILENO, "(", 1);
 	ft_putstr_fd(data->segment, STDOUT_FILENO);
 	write(STDOUT_FILENO, ",", 1);
 	ft_putstr_fd(data->section, STDOUT_FILENO);
 	ft_putstr_fd(") section\n", STDOUT_FILENO);
+}
+
+int			ft_otool_print_section(t_nm_otool *data, t_freader *reader, uint8_t *start)
+{
+	size_t	i;
+
+	i = 0;
+	print_header(data);
 	while (i < reader->text_size)
 	{
 		if (binary_is_corrupt(data, start + i + (reader->text_offset & MASK_64_BITS), 16))
