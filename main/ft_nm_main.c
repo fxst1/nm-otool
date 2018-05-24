@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/29 16:47:36 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/05/24 14:45:06 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ static void		nm_process(t_nm_otool *data)
 	free(data->buffer);
 }
 
+static void		nm_all_files(t_nm_otool *data, char **argv)
+{
+	if (!*argv)
+	{
+		data->filename = "a.out";
+		nm_process(data);
+	}
+	else
+		while (*argv)
+		{
+			data->filename = *argv;
+			nm_process(data);
+			argv++;
+		}
+}
+
 int				main(int argc, char **argv)
 {
 	t_nm_otool	data;
@@ -65,23 +81,10 @@ int				main(int argc, char **argv)
 			if (end_opts == -1)
 				usage(EXIT_FAILURE);
 			else if (end_opts == 0)
-			{
 				break ;
-			}
 			argv++;
 		}
-		if (!*argv)
-		{
-			data.filename = "a.out";
-			nm_process(&data);
-		}
-		else
-			while (*argv)
-			{
-				data.filename = *argv;
-				nm_process(&data);
-				argv++;
-			}
+		nm_all_files(&data, argv);
 	}
 	else
 		usage(EXIT_SUCCESS);

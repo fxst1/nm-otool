@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_otool_macho64.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 14:30:16 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 14:30:35 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
 int			get_segment_64(t_nm_otool *data, uint8_t *buf, t_freader *reader)
@@ -44,10 +56,8 @@ int			get_section_64(t_nm_otool *data, uint8_t *buf, t_freader *reader)
 		else if (type == LC_SEGMENT_64)
 		{
 			ret = get_segment_64(data, buf, reader);
-			if (ret == 1)
-				return (1);
-			else if (ret == 0)
-				return (0);
+			if (ret == 1 || ret == 0)
+				return (ret);
 		}
 		buf += size ? size : reader->size_load_commands;
 		i++;
@@ -55,7 +65,7 @@ int			get_section_64(t_nm_otool *data, uint8_t *buf, t_freader *reader)
 	return (ret);
 }
 
-int		ft_otool_macho64(t_nm_otool *data, uint8_t *buf)
+int			ft_otool_macho64(t_nm_otool *data, uint8_t *buf)
 {
 	t_freader	reader;
 

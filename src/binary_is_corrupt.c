@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   binary_is_corrupt.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 13:15:51 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 13:16:06 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
-int			display_error(t_nm_otool *data, const int errtype, const char *errmsg)
+int			display_error(t_nm_otool *data, const int errtype,
+				const char *errmsg)
 {
 	ft_putstr_fd(data->filename, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
@@ -32,7 +45,8 @@ int			binary_strtab_corrupt(t_nm_otool *data, char *addr)
 		}
 		else if (!ft_isprint(*addr))
 		{
-			ft_putstr_fd("Corrupt file: un-printable into STRTAB\n", STDERR_FILENO);
+			ft_putstr_fd("Corrupt file: un-printable into STRTAB\n",
+				STDERR_FILENO);
 			return (1);
 		}
 		addr++;

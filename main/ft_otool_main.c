@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/30 14:44:27 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/05/24 14:46:06 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,21 @@
 
 static void		usage(int ret)
 {
-	ft_putstr_fd("Usage: otool [-c] [-s segment section] <files ...>\n", STDOUT_FILENO);
+	ft_putstr_fd("Usage: otool [-c] [-s segment section] <files ...>\n",
+		STDOUT_FILENO);
 	exit(ret);
+}
+
+static void		parse_option_s(t_nm_otool *data, char ***argv)
+{
+	if (*((*argv) + 1) && *((*argv) + 2))
+	{
+		data->segment = *((*argv) + 1);
+		data->section = *((*argv) + 2);
+		(*argv) += 3;
+	}
+	else
+		usage(EXIT_FAILURE);
 }
 
 static int		parse_option(t_nm_otool *data, char *opt, char ***argv)
@@ -29,15 +42,8 @@ static int		parse_option(t_nm_otool *data, char *opt, char ***argv)
 				data->opts |= SHOW_CHARACTERS;
 			else if (*opt == 's' && !*(opt + 1))
 			{
-				if (*((*argv) + 1) && *((*argv) + 2))
-				{
-					data->segment = *((*argv) + 1);
-					data->section = *((*argv) + 2);
-					(*argv) += 3;
-					return (0);
-				}
-				else
-					usage(EXIT_FAILURE);
+				parse_option_s(data, argv);
+				return (0);
 			}
 			else if (*opt == '-')
 				break ;
@@ -50,24 +56,28 @@ static int		parse_option(t_nm_otool *data, char *opt, char ***argv)
 	return (0);
 }
 
-static void		otool_process(t_nm_otool *data)
+static void		otool_process(t_nm_otool *data, char **argv)
 {
-	data->print = 1;
-	if (data->segment == NULL && data->section == NULL)
+	while (*argv)
 	{
-		data->segment = "__TEXT";
-		data->section = "__text";
+		data->filename = *argv;
+		data->print = 1;
+		if (data->segment == NULL && data->section == NULL)
+		{
+			data->segment = "__TEXT";
+			data->section = "__text";
+		}
+		if (load_file(data) != 0)
+			write(2, "otool: error\n", 10);
+		else
+			ft_otool(data, data->buffer);
+		free(data->buffer);
+		argv++;
 	}
-	if (load_file(data) != 0)
-		write(2, "otool: error\n", 10);
-	else
-		ft_otool(data, data->buffer);
-	free(data->buffer);
 }
 
 int				main(int argc, char **argv)
 {
-
 	t_nm_otool	data;
 	int			end_opts;
 
@@ -87,12 +97,7 @@ int				main(int argc, char **argv)
 		if (!*argv)
 			usage(EXIT_FAILURE);
 		else
-			while (*argv)
-			{
-				data.filename = *argv;
-				otool_process(&data);
-				argv++;
-			}
+			otool_process(&data, argv);
 	}
 	else
 		usage(EXIT_SUCCESS);

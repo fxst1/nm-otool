@@ -1,5 +1,17 @@
-#ifndef FT_NM_H
-# define FT_NM_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_nm_otool.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 14:26:22 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FT_NM_OTOOL_H
+# define FT_NM_OTOOL_H
 # include "libft.h"
 # include <string.h>
 # include <stdio.h>
@@ -35,6 +47,7 @@
 #  define N_SECT 0xe
 #  define N_STAB 0xe0
 # endif
+
 typedef struct stat		t_stat;
 
 typedef struct			s_symbol
@@ -49,6 +62,7 @@ typedef struct			s_symbol
 
 typedef struct			s_freader
 {
+	size_t				symbol_size;
 	size_t				n_load_commands;
 	size_t				size_load_commands;
 	size_t				n_symbols;
@@ -81,45 +95,72 @@ typedef struct			s_nm_otool
 	char				*segment;
 }						t_nm_otool;
 
+/*
+**	Added functions
+*/
 void					*ft_print_memory(const void *addr, size_t size);
 void					ft_putnbr_base_fd(int64_t nb, char *base, int fd);
-void					ft_putnbr_base_offset_fd(int64_t nb, char *base, size_t offset,
-											int fd);
+void					ft_putnbr_base_offset_fd(int64_t nb, char *base,
+							size_t offset, int fd);
 unsigned int			ft_swap_bytes(unsigned int bytes);
 void					ft_lstiter2(t_list *lst, void (*fct)(void*, t_list*),
-									void *data);
-void 					ft_lstadd_sort(t_list **root, t_list *add,
-										int (*cmp)(void*, void*));
+							void *data);
+void					ft_lstadd_sort(t_list **root, t_list *add,
+							int (*cmp)(void*, void*));
 
+/*
+**	Symbols
+*/
 void					iter_symbols_default(void *nbits, t_list *lst);
 int						compare_symbols(void *p1, void *p2);
 
+/*
+**	Load a binary file
+*/
 int						load_file(t_nm_otool *data);
 
+/*
+**	Nm
+*/
 int						ft_nm(t_nm_otool *data, uint8_t *buf);
-int 					ft_nm_macho64(t_nm_otool *data, uint8_t *buf);
-int 					ft_nm_macho32(t_nm_otool *data, uint8_t *buf);
-int 					ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap);
+int						ft_nm_macho64(t_nm_otool *data, uint8_t *buf);
+int						ft_nm_macho32(t_nm_otool *data, uint8_t *buf);
+int						ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_nm_ar(t_nm_otool *data, uint8_t *buf);
 void					ft_nm_clear(t_nm_otool *data);
 void					ft_nm_print(t_nm_otool *data);
+int						get_seg_sect_name_64(uint8_t *buf, size_t sect_index,
+							t_symbol *s, size_t n_load_commands);
+int						get_seg_sect_name_32(uint8_t *buf, size_t sect_index,
+							t_symbol *s, size_t n_load_commands);
 
-int						ft_otool_print_section(t_nm_otool *data, t_freader *reader, uint8_t *start);
-
+/*
+**	Otool
+*/
 int						ft_otool(t_nm_otool *data, uint8_t *buf);
-int 					ft_otool_macho64(t_nm_otool *data, uint8_t *buf);
-int 					ft_otool_macho32(t_nm_otool *data, uint8_t *buf);
-int 					ft_otool_fat(t_nm_otool *data, uint8_t *buf, int swap);
+int						ft_otool_macho64(t_nm_otool *data, uint8_t *buf);
+int						ft_otool_macho32(t_nm_otool *data, uint8_t *buf);
+int						ft_otool_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_otool_ar(t_nm_otool *data, uint8_t *buf);
+int						ft_otool_print_section(t_nm_otool *data,
+							t_freader *reader, uint8_t *start);
 
+/*
+**	Achive helpers
+*/
 int						compare_ar_symbols(void *p1, void *p2);
 uint32_t				get_size_name(uint8_t *buf);
-int						read_object(t_nm_otool *data, uint8_t *buf, t_list **root);
+int						read_object(t_nm_otool *data, uint8_t *buf,
+							t_list **root);
 
-int						display_error(t_nm_otool *data, const int errtype, const char *errmsg);
+/*
+**	Errors
+*/
+int						display_error(t_nm_otool *data, const int errtype,
+							const char *errmsg);
 int						corruption_error(t_nm_otool *data, const char *errmsg);
 int						binary_strtab_corrupt(t_nm_otool *data, char *addr);
 int						binary_is_corrupt(t_nm_otool *data, uint8_t *access,
-											size_t len);
+							size_t len);
 
 #endif

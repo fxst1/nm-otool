@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_nm.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 14:12:21 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 14:12:38 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
 void			ft_nm_print(t_nm_otool *data)
 {
 	if (data->opts == 0)
-		ft_lstiter2(data->symbols, &iter_symbols_default, (void*)(uintptr_t)data->nbits);
+		ft_lstiter2(data->symbols, &iter_symbols_default,
+			(void*)(uintptr_t)data->nbits);
 }
 
 void			ft_nm_clear(t_nm_otool *data)
@@ -23,7 +36,7 @@ void			ft_nm_clear(t_nm_otool *data)
 	data->symbols = NULL;
 }
 
-static int 		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
+static int		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 {
 	if (magic == MH_MAGIC_64)
 	{
@@ -47,7 +60,7 @@ static int 		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 	return (1);
 }
 
-int 			ft_nm(t_nm_otool *data, uint8_t *buf)
+int				ft_nm(t_nm_otool *data, uint8_t *buf)
 {
 	if (binary_is_corrupt(data, buf, 8))
 		corruption_error(data, "Corrupt file: MAGIC\n");

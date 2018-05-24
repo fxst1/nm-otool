@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ar_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 13:15:24 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 13:15:25 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
 int			compare_ar_symbols(void *p1, void *p2)
@@ -28,6 +40,7 @@ int			read_object(t_nm_otool *data, uint8_t *buf, t_list **root)
 		return (corruption_error(data, "Symbol Table\n"));
 	ar_object.symbol = *(uint32_t*)(buf);
 	ar_object.offset = *(uint32_t*)(buf + 4);
-	ft_lstadd_sort(root, ft_lstnew(&ar_object, sizeof(t_object)), &compare_ar_symbols);
+	ft_lstadd_sort(root, ft_lstnew(&ar_object, sizeof(t_object)),
+		&compare_ar_symbols);
 	return (0);
 }

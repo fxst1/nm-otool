@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putnbr_base_offset_fd.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 13:08:45 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 13:09:13 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
-void	ft_putnbr_base_fd(int64_t nb, char *base, int fd)
+void			ft_putnbr_base_fd(int64_t nb, char *base, int fd)
 {
 	size_t	length;
 

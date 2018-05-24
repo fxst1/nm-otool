@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_nm_macho64.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 14:07:26 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 14:08:57 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
-int				look_symtab_64(t_nm_otool *data, uint8_t *buf, t_freader *reader)
+int				look_symtab_64(t_nm_otool *data, uint8_t *buf,
+					t_freader *reader)
 {
 	if (binary_is_corrupt(data, buf + 8, 16))
 		return (corruption_error(data, "LC_SYMTAB\n"));
@@ -11,7 +24,8 @@ int				look_symtab_64(t_nm_otool *data, uint8_t *buf, t_freader *reader)
 	return (0);
 }
 
-int				load_symtab_64(t_nm_otool *data, t_freader *reader, uint8_t *buf)
+int				load_symtab_64(t_nm_otool *data, t_freader *reader,
+					uint8_t *buf)
 {
 	uint32_t	i;
 	uint32_t	type;
@@ -31,10 +45,8 @@ int				load_symtab_64(t_nm_otool *data, t_freader *reader, uint8_t *buf)
 			else if (binary_is_corrupt(data, buf, size))
 				return (corruption_error(data, "Section\n"));
 			else if (type == LC_SYMTAB)
-			{
 				if (look_symtab_64(data, buf, reader) != 0)
 					return (1);
-			}
 			buf += size;
 		}
 		i++;
@@ -42,45 +54,8 @@ int				load_symtab_64(t_nm_otool *data, t_freader *reader, uint8_t *buf)
 	return (0);
 }
 
-int			get_seg_sect_name_64(uint8_t *buf, size_t sect_index, t_symbol *s,
-								size_t n_load_commands)
-{
-	uint32_t	i;
-	uint32_t	type;
-	uint32_t	size;
-	uint32_t	n_section;
-	uint8_t		*tmp;
-
-	i = 0;
-	buf += 0x20;
-	while (i < n_load_commands)
-	{
-		type = *((uint32_t*)buf);
-		size = *((uint32_t*)buf + 1);
-		if (type == LC_SEGMENT_64)
-		{
-			n_section = *(uint32_t*)(buf + 0x40);
-			tmp = buf + 0x48;
-			while (n_section--)
-			{
-				sect_index--;
-				if (sect_index == 0)
-				{
-					s->segname = (char*)tmp;
-					s->sectname = (char*)tmp + 0x10;
-					return (0);
-				}
-				tmp += 0x50;
-			}
-		}
-		buf += size;
-		i++;
-	}
-	return (1);
-}
-
-int				load_symbols_64(t_nm_otool *data, t_freader *reader, uint8_t *buf,
-							uint8_t *start)
+int				load_symbols_64(t_nm_otool *data, t_freader *reader,
+					uint8_t *buf, uint8_t *start)
 {
 	size_t		i;
 	size_t		sect_index;
@@ -91,28 +66,24 @@ int				load_symbols_64(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 	{
 		ft_bzero(&s, sizeof(s));
 		if (binary_is_corrupt(data, buf, 0x10))
-		{
-			ft_putstr_fd("Corrupt file: Symbol\n", STDERR_FILENO);
-			return (1);
-		}
+			return (corruption_error(data, "Symbol not correctly defined\n"));
 		s.symbname = (char*)start + reader->strtab_offset + *(uint32_t*)buf;
 		s.type = *(buf + 4);
 		s.value = *(uint64_t*)(buf + 8);
 		sect_index = *(buf + 5);
 		if (sect_index > 0 &&
-			get_seg_sect_name_64(start, sect_index, &s, reader->n_load_commands) != 0)
-		{
-			corruption_error(data, "section index not found\n");
-			return (1);
-		}
-		ft_lstadd_sort(&data->symbols, ft_lstnew(&s, sizeof(s)), &compare_symbols);
+			get_seg_sect_name_64(start, sect_index, &s, reader->n_load_commands)
+				!= 0)
+			return (corruption_error(data, "section index not found\n"));
+		ft_lstadd_sort(&data->symbols, ft_lstnew(&s, sizeof(s)),
+			&compare_symbols);
 		buf += 0x10;
 		i++;
 	}
 	return (0);
 }
 
-int 			ft_nm_macho64(t_nm_otool *data, uint8_t *buf)
+int				ft_nm_macho64(t_nm_otool *data, uint8_t *buf)
 {
 	t_freader	reader;
 
@@ -125,9 +96,11 @@ int 			ft_nm_macho64(t_nm_otool *data, uint8_t *buf)
 		reader.size_load_commands = *(uint32_t*)(buf + 0x14);
 		if (load_symtab_64(data, &reader, buf + 0x20) != 0)
 			return (1);
-		if (binary_is_corrupt(data, buf + reader.strtab_offset, reader.strtab_size))
+		if (binary_is_corrupt(data, buf + reader.strtab_offset,
+				reader.strtab_size))
 			return (corruption_error(data, "String Table\n"));
-		if (load_symbols_64(data, &reader, buf + reader.symtab_offset, buf) != 0)
+		if (load_symbols_64(data, &reader, buf + reader.symtab_offset, buf)
+				!= 0)
 			return (1);
 	}
 	return (0);

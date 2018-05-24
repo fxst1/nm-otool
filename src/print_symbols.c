@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_symbols.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/24 14:34:42 by fjacquem          #+#    #+#             */
+/*   Updated: 2018/05/24 14:35:10 by fjacquem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_nm_otool.h"
 
 void		set_symbol_char(t_symbol *s)
@@ -30,9 +42,9 @@ void		set_symbol_char(t_symbol *s)
 
 int			compare_symbols(void *p1, void *p2)
 {
-	t_symbol *a;
-	t_symbol *b;
-	int		ret;
+	t_symbol	*a;
+	t_symbol	*b;
+	int			ret;
 
 	a = (t_symbol*)p1;
 	b = (t_symbol*)p2;
@@ -51,9 +63,11 @@ void		iter_symbols_default(void *nbits, t_list *lst)
 		return ;
 	set_symbol_char(s);
 	if (s->value == 0 && s->character != 'T')
-		ft_putstr_fd((size_t)nbits == 8 ? "        " : "                ", STDOUT_FILENO);
+		ft_putstr_fd((size_t)nbits == 8 ? "        " : "                ",
+			STDOUT_FILENO);
 	else
-		ft_putnbr_base_offset_fd(s->value, "0123456789abcdef", (size_t)nbits, STDOUT_FILENO);
+		ft_putnbr_base_offset_fd(s->value, "0123456789abcdef", (size_t)nbits,
+			STDOUT_FILENO);
 	write(STDOUT_FILENO, " ", 1);
 	write(STDOUT_FILENO, &s->character, 1);
 	write(STDOUT_FILENO, " ", 1);
