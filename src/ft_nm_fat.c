@@ -6,11 +6,34 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:28:52 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 13:29:22 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:39:20 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
+
+static int		suite(t_nm_otool *data, uint32_t n_arch, uint8_t *buf, int swap)
+{
+	uint8_t		*tmp;
+	uint32_t	i;
+	uint32_t	offset;
+	uint32_t	archs[1024];
+
+	tmp = buf + 8;
+	i = 0;
+	while (i < n_arch && i < 1024)
+	{
+		if (binary_is_corrupt(data, buf, 20))
+			return (corruption_error(data, "Fat content\n"));
+		archs[i] = *(uint32_t*)tmp;
+		offset = swap ? ft_swap_bytes(*((uint32_t*)tmp + 2)) :
+							*((uint32_t*)tmp + 2);
+		ft_nm(data, buf + offset);
+		tmp += 0x14;
+		i++;
+	}
+	return (0);
+}
 
 int				ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap)
 {
@@ -38,5 +61,5 @@ int				ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap)
 		tmp += 0x14;
 		i++;
 	}
-	return (0);
+	return (suite(data, n_arch, buf, swap));
 }

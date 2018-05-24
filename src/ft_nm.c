@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:12:21 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:12:38 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/05/24 17:10:09 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ static int		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 		data->nbits = 16;
 		return (ft_nm_macho64(data, buf));
 	}
-	else if (magic == MH_MAGIC)
+	else if (magic == MH_MAGIC || magic == MH_CIGAM)
 	{
 		data->nbits = 8;
-		return (ft_nm_macho32(data, buf));
+		return (magic == MH_CIGAM ? ft_nm_ppc(data, buf) :
+									ft_nm_macho32(data, buf));
 	}
 	else if (magic == FAT_CIGAM || magic == FAT_MAGIC)
 		return (ft_nm_fat(data, buf, magic == FAT_CIGAM));

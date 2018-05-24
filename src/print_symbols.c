@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:34:42 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:35:10 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/05/24 16:54:19 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,20 @@ int			compare_symbols(void *p1, void *p2)
 
 void		iter_symbols_default(void *nbits, t_list *lst)
 {
-	t_symbol *s;
+	t_symbol	*s;
+	uint64_t	value;
 
 	s = (t_symbol*)lst->content;
+	if ((size_t)nbits == 8)
+		value = s->value & 0xffffffff;
 	if (s->type & N_STAB)
 		return ;
 	set_symbol_char(s);
-	if (s->value == 0 && s->character != 'T')
+	if (value == 0 && s->character != 'T')
 		ft_putstr_fd((size_t)nbits == 8 ? "        " : "                ",
 			STDOUT_FILENO);
 	else
-		ft_putnbr_base_offset_fd(s->value, "0123456789abcdef", (size_t)nbits,
+		ft_putnbr_base_offset_fd(value, "0123456789abcdef", (size_t)nbits,
 			STDOUT_FILENO);
 	write(STDOUT_FILENO, " ", 1);
 	write(STDOUT_FILENO, &s->character, 1);

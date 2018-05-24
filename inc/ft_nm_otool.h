@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:26:22 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/05/24 17:58:26 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 #  define CPU_TYPE_I386 0x7000000
 #  define MH_MAGIC_64 0xFEEDFACF
 #  define MH_MAGIC 0xFEEDFACE
+#  define MH_CIGAM 0xCEFAEDFE
 #  define FAT_CIGAM 0xBEBAFECA
 #  define FAT_MAGIC 0xCAFEBABE
 #  define LC_SEGMENT 0x1
@@ -125,6 +126,7 @@ int						load_file(t_nm_otool *data);
 int						ft_nm(t_nm_otool *data, uint8_t *buf);
 int						ft_nm_macho64(t_nm_otool *data, uint8_t *buf);
 int						ft_nm_macho32(t_nm_otool *data, uint8_t *buf);
+int						ft_nm_ppc(t_nm_otool *data, uint8_t *buf);
 int						ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_nm_ar(t_nm_otool *data, uint8_t *buf);
 void					ft_nm_clear(t_nm_otool *data);
@@ -133,7 +135,8 @@ int						get_seg_sect_name_64(uint8_t *buf, size_t sect_index,
 							t_symbol *s, size_t n_load_commands);
 int						get_seg_sect_name_32(uint8_t *buf, size_t sect_index,
 							t_symbol *s, size_t n_load_commands);
-
+int						get_seg_sect_name_ppc(uint8_t *buf, size_t sect_index,
+							t_symbol *s, size_t n_load_commands);
 /*
 **	Otool
 */
