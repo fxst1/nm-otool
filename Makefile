@@ -6,7 +6,7 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2018/04/30 12:22:09 by fxst1            ###   ########.fr        #
+#    Updated: 2018/09/01 14:12:11 by fjacquem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
@@ -45,7 +45,7 @@ clean:
 cleanlib:
 	make -C libft fclean
 
-fclean:
+fclean: cleanlib
 	@rm -rf $(OBJDIR)
 	@rm -rf $(NM)
 	@rm -rf $(OTOOL)
