@@ -1,0 +1,1 @@
+Usage: otool [-c] [-s segment section] <files ...>

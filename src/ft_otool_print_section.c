@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:33:23 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:34:13 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/01 15:45:09 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void		putline(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 	j = 0;
 	ft_putnbr_base_offset_fd(reader->text_addr + i, BASE_HEX, data->nbits,
 		STDOUT_FILENO);
-	write(STDOUT_FILENO, " ", 1);
+	write(STDOUT_FILENO, "\t", 1);
 	while (j < 16 && i + j < reader->text_size)
 	{
 		if (buf[(reader->text_offset & MASK_64_BITS) + i + j] <= 0xf)
@@ -65,7 +65,7 @@ static void		print_header(t_nm_otool *data)
 		write(STDOUT_FILENO, ")", 1);
 	}
 	write(STDOUT_FILENO, ":\n", 2);
-	write(STDOUT_FILENO, "(", 1);
+	write(STDOUT_FILENO, "Contents of (", 13);
 	ft_putstr_fd(data->segment, STDOUT_FILENO);
 	write(STDOUT_FILENO, ",", 1);
 	ft_putstr_fd(data->section, STDOUT_FILENO);

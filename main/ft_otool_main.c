@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/05/24 14:46:06 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/01 15:53:22 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void		otool_process(t_nm_otool *data, char **argv)
 			data->section = "__text";
 		}
 		if (load_file(data) != 0)
-			write(2, "otool: error\n", 10);
+			write(2, "otool: error\n", 13);
 		else
 			ft_otool(data, data->buffer);
 		free(data->buffer);

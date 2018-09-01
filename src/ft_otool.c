@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:30:59 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:33:11 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/01 16:05:17 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ static int		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 		return (ft_otool_ar(data, buf));
 	}
 	else
-		display_error(data, -1, "Undefined MAGIC\n");
+		display_error(data, -1, "Undefined magic number\n");
 	return (1);
 }
 
 int				ft_otool(t_nm_otool *data, uint8_t *buf)
 {
 	if (binary_is_corrupt(data, buf, 8))
-		corruption_error(data, "Corrupt file: MAGIC\n");
+		corruption_error(data, "magic\n");
 	else
 		parse_magic(data, buf, *(uint32_t*)buf);
 	return (0);
