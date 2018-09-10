@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:30:04 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/01 13:57:27 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 14:14:39 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int				load_symbols_ppc(t_nm_otool *data, t_freader *reader,
 			return (corruption_error(data, "Symbol not correctly defined\n"));
 		s.symbname = (char*)start + reader->strtab_offset +
 					ft_swap_bytes(*(uint32_t*)buf);
-		s.type = ft_swap_bytes(*(buf + 4));
+		s.type = *(buf + 4);
 		s.value = ft_swap_bytes(*(uint64_t*)(buf + 8));
 		sect_index = (*(buf + 5));
 		if (sect_index > 0 &&

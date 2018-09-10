@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:07:26 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:08:57 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 15:22:49 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ int				load_symtab_64(t_nm_otool *data, t_freader *reader,
 	return (0);
 }
 
+static int		init_symbol(t_nm_otool *data, t_symbol *s, uint8_t *buf,
+					char *strtab)
+{
+	ft_bzero(s, sizeof(*s));
+	if (binary_is_corrupt(data, buf, 0x10))
+		return (corruption_error(data, "Symbol not correctly defined\n"));
+	s->symbname = (char*)strtab + *(uint32_t*)buf;
+	if (binary_strtab_corrupt(data, s->symbname))
+		return (corruption_error(data, "Symbol name truncated\n"));
+	s->type = *(buf + 4);
+	s->value = *(uint64_t*)(buf + 8);
+	return (0);
+}
+
 int				load_symbols_64(t_nm_otool *data, t_freader *reader,
 					uint8_t *buf, uint8_t *start)
 {
@@ -64,12 +78,8 @@ int				load_symbols_64(t_nm_otool *data, t_freader *reader,
 	i = 0;
 	while (i < reader->n_symbols)
 	{
-		ft_bzero(&s, sizeof(s));
-		if (binary_is_corrupt(data, buf, 0x10))
-			return (corruption_error(data, "Symbol not correctly defined\n"));
-		s.symbname = (char*)start + reader->strtab_offset + *(uint32_t*)buf;
-		s.type = *(buf + 4);
-		s.value = *(uint64_t*)(buf + 8);
+		if (init_symbol(data, &s, buf, (char*)start + reader->strtab_offset))
+			return (1);
 		sect_index = *(buf + 5);
 		if (sect_index > 0 &&
 			get_seg_sect_name_64(start, sect_index, &s, reader->n_load_commands)

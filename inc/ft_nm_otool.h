@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 17:58:26 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 13:50:21 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 #  define N_SECT 0xe
 #  define N_STAB 0xe0
 # endif
+# include <mach-o/loader.h>
 
 typedef struct stat		t_stat;
 

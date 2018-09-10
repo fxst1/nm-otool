@@ -1,15 +1,38 @@
 #!/bin/bash
 
 echo "" > "./test.log"
-for file in $1
+for file in $@
 do
+
 	echo $file;
-	./ft_nm $file > tmp1 && nm $file > tmp2 && diff tmp1 tmp2 > tmp
+	./ft_nm $file > user 2> user_err && nm $file > ref 2> ref_err && diff user ref > tmp
+
+	#if diff is not empty
 	if [ -s tmp ]; then
+
 		echo $file >> "./test.log"
-		diff tmp tmp2 >> "./test.log"
-		echo -e "\x1B[38;5;1m====> ERROR\x1B[0m"
+		diff user ref >> "./test.log"
+
+		#if there is an error	 from ft_nm
+		if [ -s user_err ]; then
+
+			echo -e "\x1B[38;5;3m====> WARNING\x1B[0m"
+			echo "= User error:"
+			cat user_err
+			echo "= Reference error:"
+			cat ref_err
+
+		else
+			echo -e "\x1B[38;5;1m====> ERROR\x1B[0m"
+		fi
+
+	else
+
+		echo -e "\x1B[38;5;2m====> OK\x1B[0m"
+
 	fi
 
+	echo ""
+
 done
-rm tmp tmp1 tmp2
+rm -f tmp user user_err ref ref_err

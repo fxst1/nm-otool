@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:34:42 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 16:54:19 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 16:14:06 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,14 @@ void		iter_symbols_default(void *nbits, t_list *lst)
 	uint64_t	value;
 
 	s = (t_symbol*)lst->content;
+	value = s->value;
 	if ((size_t)nbits == 8)
 		value = s->value & 0xffffffff;
 	if (s->type & N_STAB)
 		return ;
 	set_symbol_char(s);
-	if (value == 0 && s->character != 'T')
+	if (value == 0 && s->character != 'T' && s->character != 't' &&
+		s->character != 'a' && s->character != 'A')
 		ft_putstr_fd((size_t)nbits == 8 ? "        " : "                ",
 			STDOUT_FILENO);
 	else

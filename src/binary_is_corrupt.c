@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:15:51 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 13:16:06 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 15:46:25 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,11 @@ int			corruption_error(t_nm_otool *data, const char *errmsg)
 int			binary_strtab_corrupt(t_nm_otool *data, char *addr)
 {
 	if (binary_is_corrupt(data, (uint8_t*)addr, 1))
-	{
-		ft_putstr_fd("Corrupt file: STRTAB content\n", STDERR_FILENO);
 		return (1);
-	}
 	while (*addr)
 	{
-		if (binary_is_corrupt(data, (uint8_t*)addr, 1))
-		{
-			ft_putstr_fd("Corrupt file: STRTAB content\n", STDERR_FILENO);
+		if (binary_is_corrupt(data, (uint8_t*)addr, 1) || !ft_isprint(*addr))
 			return (1);
-		}
-		else if (!ft_isprint(*addr))
-		{
-			ft_putstr_fd("Corrupt file: un-printable into STRTAB\n",
-				STDERR_FILENO);
-			return (1);
-		}
 		addr++;
 	}
 	return (0);
