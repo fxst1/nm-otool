@@ -6,14 +6,21 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:28:52 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 15:23:44 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 20:18:59 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
 
-static void		print_arch(t_nm_otool *data, uint32_t arch)
+static void		print_arch(t_nm_otool *data, uint32_t n_arch, uint32_t arch)
 {
+	if (n_arch == 1)
+	{
+		ft_putstr_fd(data->filename, STDOUT_FILENO);
+		write(STDOUT_FILENO, ":\n", 2);
+		return ;
+	}
+	write(STDOUT_FILENO, "\n", 1);
 	ft_putstr_fd(data->filename, STDOUT_FILENO);
 	write(STDOUT_FILENO, " (for architecture ", 19);
 	if (arch == CPU_TYPE_POWERPC)
@@ -47,8 +54,7 @@ static int		explore_archs(t_nm_otool *data, uint32_t n_arch, uint8_t *buf,
 							*((uint32_t*)tmp + 2);
 		if (offset == 0)
 			return (corruption_error(data, "Fat offset overflow or zero\n"));
-		write(STDOUT_FILENO, "\n", 1);
-		print_arch(data, archs[i]);
+		print_arch(data, n_arch, archs[i]);
 		ft_nm(data, buf + offset);
 		tmp += 0x14;
 		i++;

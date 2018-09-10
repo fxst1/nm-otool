@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:34:42 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 16:14:06 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 22:22:03 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		set_symbol_char(t_symbol *s)
 			s->character = 'S';
 	}
 	else if ((s->type & N_TYPE) == N_UNDF)
-		s->character = 'U';
+		s->character = (s->type & 0x10) ? 'C' : 'U';
 	else if ((s->type & N_TYPE) == N_ABS)
 		s->character = 'A';
 	else if ((s->type & N_TYPE) == N_PBUD)

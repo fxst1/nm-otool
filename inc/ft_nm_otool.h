@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 13:50:21 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 20:28:31 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@
 #  define N_SECT 0xe
 #  define N_STAB 0xe0
 # endif
+# define RANLIB_HEADER_SIZE 0x3C
+# define RANLIB_HEADER_SIZE_OFFSET 0x30
+# define RANLIB_LONG_NAME_OFFSET 0x44
+# define ARCH_SIGN_LEN	0x8
+# define ARCH_SIGN		"!<arch>\n"
+
 # include <mach-o/loader.h>
 
 typedef struct stat		t_stat;
@@ -155,6 +161,8 @@ int						ft_otool_print_section(t_nm_otool *data,
 int						compare_ar_symbols(void *p1, void *p2);
 uint32_t				get_size_name(uint8_t *buf);
 int						read_object(t_nm_otool *data, uint8_t *buf,
+							t_list **root);
+int						append_unref_objects(t_nm_otool *data, uint8_t *buf,
 							t_list **root);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:12:21 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/01 16:04:43 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 20:48:54 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void			ft_nm_clear(t_nm_otool *data)
 
 static int		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 {
+	//printf("%lx - %x\n", (uintptr_t)(buf - data->buffer), magic);
 	if (magic == MH_MAGIC_64)
 	{
 		data->nbits = 16;
@@ -51,7 +52,7 @@ static int		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 	}
 	else if (magic == FAT_CIGAM || magic == FAT_MAGIC)
 		return (ft_nm_fat(data, buf, magic == FAT_CIGAM));
-	else if (ft_strncmp("!<arch>\n", (char*)buf, 8) == 0)
+	else if (ft_strncmp(ARCH_SIGN, (char*)buf, ARCH_SIGN_LEN) == 0)
 	{
 		data->print = 0;
 		return (ft_nm_ar(data, buf));

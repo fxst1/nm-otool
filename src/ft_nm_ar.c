@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:16:14 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 13:27:15 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 21:00:01 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void			myoutput(t_nm_otool *data, uint8_t *start, t_object *o)
 	write(STDOUT_FILENO, "\n", 1);
 	ft_putstr_fd(data->filename, STDOUT_FILENO);
 	write(STDOUT_FILENO, "(", 1);
-	ft_putstr_fd((char*)start + o->offset + 0x3C, STDOUT_FILENO);
+	ft_putstr_fd((char*)start + o->offset + RANLIB_HEADER_SIZE, STDOUT_FILENO);
 	write(STDOUT_FILENO, "):\n", 3);
 	ft_nm_print(data);
 	ft_nm_clear(data);
@@ -30,16 +30,16 @@ static int			print_object(t_nm_otool *data, uint8_t *start,
 	int			err;
 
 	size_name = get_size_name(start + o->offset);
-	if (*value != (uintptr_t)start + o->offset + 0x3C + size_name)
+	if (*value != (uintptr_t)start + o->offset + RANLIB_HEADER_SIZE + size_name)
 	{
 		data->print = 0;
-		err = ft_nm(data, start + o->offset + 0x3C + size_name);
+		err = ft_nm(data, start + o->offset + RANLIB_HEADER_SIZE + size_name);
 		if (!err)
 			myoutput(data, start, o);
 		else
 			return (1);
 	}
-	*value = (uintptr_t)start + o->offset + 0x3C + size_name;
+	*value = (uintptr_t)start + o->offset + RANLIB_HEADER_SIZE + size_name;
 	return (0);
 }
 
@@ -79,19 +79,15 @@ int					ft_nm_ar(t_nm_otool *data, uint8_t *buf)
 	objs = NULL;
 	if (binary_is_corrupt(data, buf + 0x4, 0x88))
 		return (corruption_error(data, "Symtab Header\n"));
-	size_name = get_size_name(buf + 0x8);
+	size_name = get_size_name(buf + ARCH_SIGN_LEN);
 	ft_bzero(&reader, sizeof(t_freader));
-	reader.symtab_offset = 0x44 + size_name + 0x4;
-	if (binary_is_corrupt(data, buf + 0x44 + size_name, 4))
+	reader.symtab_offset = RANLIB_LONG_NAME_OFFSET + size_name + 0x4;
+	if (binary_is_corrupt(data, buf + RANLIB_LONG_NAME_OFFSET + size_name, 4))
 		return (corruption_error(data, "Symbol Table Size\n"));
-	symbol_size = *(uint32_t*)(buf + 0x44 + size_name);
+	symbol_size = *(uint32_t*)(buf + RANLIB_LONG_NAME_OFFSET + size_name);
 	reader.strtab_offset = reader.symtab_offset + symbol_size;
-	while (i < symbol_size)
-	{
-		if (read_object(data, buf + reader.symtab_offset + i, &objs) != 0)
-			return (1);
-		i += 0x8;
-	}
-	print_objects(data, objs, buf);
+	if (append_unref_objects(data, buf + reader.strtab_offset, &objs))
+		return (1);
+	print_objects(data, objs, data->buffer);
 	return (0);
 }
