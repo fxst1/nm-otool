@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:15:24 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 21:00:40 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 22:45:03 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			read_object(t_nm_otool *data, uint8_t *buf, t_list **root)
 	return (0);
 }
 
-int		append_unref_objects(t_nm_otool *data, uint8_t *buf, t_list **root)
+int			append_unref_objects(t_nm_otool *data, uint8_t *buf, t_list **root)
 {
 	t_object	o;
 	uint32_t	strtab_size;

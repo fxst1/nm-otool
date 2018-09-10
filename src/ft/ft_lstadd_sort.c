@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:08:24 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 22:23:41 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/10 22:44:40 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	mysort(t_list **root, t_list *add, t_list *tmp,
 void		ft_lstadd_sort(t_list **root, t_list *add, int (*cmp)(void*, void*))
 {
 	t_list	*tmp;
+
 	tmp = *root;
 	if (!tmp)
 		*root = add;
