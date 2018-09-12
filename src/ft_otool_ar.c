@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:13:09 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:27:43 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/12 17:42:28 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,6 @@ static int			print_objects(t_nm_otool *data, t_list *objs,
 	return (err);
 }
 
-static int			read_objects(t_nm_otool *data, t_freader reader,
-						uint8_t *buf, t_list **objs)
-{
-	size_t		i;
-
-	i = 0;
-	while (i < reader.symbol_size)
-	{
-		if (read_object(data, buf + reader.symtab_offset + i, objs) != 0)
-			return (1);
-		i += 0x8;
-	}
-	return (0);
-}
-
 int					ft_otool_ar(t_nm_otool *data, uint8_t *buf)
 {
 	uint32_t	i;
@@ -64,21 +49,23 @@ int					ft_otool_ar(t_nm_otool *data, uint8_t *buf)
 	t_freader	reader;
 	t_list		*objs;
 
+	data->print = 1;
 	i = 0;
 	objs = NULL;
 	if (binary_is_corrupt(data, buf + 0x4, 0x88))
 		return (corruption_error(data, "Symtab Header\n"));
 	size_name = get_size_name(buf + 0x8);
 	ft_bzero(&reader, sizeof(t_freader));
-	reader.symtab_offset = 0x44 + size_name + 0x4;
-	if (binary_is_corrupt(data, buf + 0x44 + size_name, 4))
+	reader.symtab_offset = RANLIB_LONG_NAME_OFFSET + size_name + 0x4;
+	if (binary_is_corrupt(data, buf + RANLIB_LONG_NAME_OFFSET + size_name, 4))
 		return (corruption_error(data, "Symbol Table Size\n"));
-	reader.symbol_size = *(uint32_t*)(buf + 0x44 + size_name);
+	reader.symbol_size = *(uint32_t*)(buf + RANLIB_LONG_NAME_OFFSET +
+							size_name);
 	reader.strtab_offset = reader.symtab_offset + reader.symbol_size;
-	if (read_objects(data, reader, buf, &objs))
+	if (append_unref_objects(data, buf + reader.strtab_offset, &objs))
 		return (1);
 	write(STDOUT_FILENO, "Archive : ", 10);
 	ft_putendl_fd(data->filename, STDOUT_FILENO);
-	print_objects(data, objs, buf);
+	print_objects(data, objs, data->buffer);
 	return (0);
 }

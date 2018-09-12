@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 20:28:31 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/12 18:47:27 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 # include <stdint.h>
 # include <sys/stat.h>
 # include <sys/mman.h>
+# include <mach-o/loader.h>
+# include <mach-o/arch.h>
+# include <mach-o/fat.h>
+# include <mach/machine.h>
+# include <mach-o/nlist.h>
 # define BASE_HEX "0123456789abcdef"
 # define ERR_CORRUPT_FILE 0
 # define SHOW_DEFAULT 0
@@ -28,33 +33,11 @@
 # define SHOW_ALL 1
 # define SHOW_UNDEF_ONLY 2
 # define MASK_64_BITS 0xFFFFFFFF
-# ifndef LC_SEGMENT_64
-#  define CPU_TYPE_X86_64 0x7000001
-#  define CPU_TYPE_I386 0x7000000
-#  define MH_MAGIC_64 0xFEEDFACF
-#  define MH_MAGIC 0xFEEDFACE
-#  define MH_CIGAM 0xCEFAEDFE
-#  define FAT_CIGAM 0xBEBAFECA
-#  define FAT_MAGIC 0xCAFEBABE
-#  define LC_SEGMENT 0x1
-#  define LC_SEGMENT_64 0x19
-#  define LC_SYMTAB 0x2
-#  define N_TYPE 0x0e
-#  define N_UNDF 0x0
-#  define N_EXT 0x1
-#  define N_ABS 0x2
-#  define N_INDR 0xa
-#  define N_PBUD 0xc
-#  define N_SECT 0xe
-#  define N_STAB 0xe0
-# endif
 # define RANLIB_HEADER_SIZE 0x3C
 # define RANLIB_HEADER_SIZE_OFFSET 0x30
 # define RANLIB_LONG_NAME_OFFSET 0x44
 # define ARCH_SIGN_LEN	0x8
 # define ARCH_SIGN		"!<arch>\n"
-
-# include <mach-o/loader.h>
 
 typedef struct stat		t_stat;
 
@@ -150,10 +133,11 @@ int						get_seg_sect_name_ppc(uint8_t *buf, size_t sect_index,
 int						ft_otool(t_nm_otool *data, uint8_t *buf);
 int						ft_otool_macho64(t_nm_otool *data, uint8_t *buf);
 int						ft_otool_macho32(t_nm_otool *data, uint8_t *buf);
+int						ft_otool_ppc(t_nm_otool *data, uint8_t *buf);
 int						ft_otool_fat(t_nm_otool *data, uint8_t *buf, int swap);
 int						ft_otool_ar(t_nm_otool *data, uint8_t *buf);
 int						ft_otool_print_section(t_nm_otool *data,
-							t_freader *reader, uint8_t *start);
+							t_freader *reader, uint8_t *start, int is_ppc);
 
 /*
 **	Achive helpers

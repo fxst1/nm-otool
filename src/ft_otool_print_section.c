@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:33:23 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/01 15:45:09 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/12 17:23:26 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ static void		putline(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 		}
 }
 
+static void		putline_ppc(t_nm_otool *data, t_freader *reader, uint8_t *buf,
+					size_t i)
+{
+	size_t		j;
+
+	j = 0;
+	ft_putnbr_base_offset_fd(reader->text_addr + i, BASE_HEX, data->nbits,
+		STDOUT_FILENO);
+	write(STDOUT_FILENO, "\t", 1);
+	while (j < 16 && i + j < reader->text_size)
+	{
+		if (buf[(reader->text_offset & MASK_64_BITS) + i + j] <= 0xf)
+			ft_putstr_fd("0", STDOUT_FILENO);
+		ft_putnbr_base_fd(buf[(reader->text_offset & MASK_64_BITS) + i + j],
+			BASE_HEX, STDOUT_FILENO);
+		if (j % 4 == 3)
+			write(STDOUT_FILENO, " ", 1);
+		j++;
+	}
+	if (data->opts & SHOW_CHARACTERS)
+		while (j < 16)
+		{
+			write(STDOUT_FILENO, "   ", 3);
+			j++;
+		}
+}
+
 static void		putchars(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 					size_t i)
 {
@@ -57,14 +84,17 @@ static void		putchars(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 
 static void		print_header(t_nm_otool *data)
 {
-	ft_putstr_fd(data->filename, STDOUT_FILENO);
-	if (data->objname)
+	if (data->print)
 	{
-		write(STDOUT_FILENO, "(", 1);
-		ft_putstr_fd(data->objname, STDOUT_FILENO);
-		write(STDOUT_FILENO, ")", 1);
+		ft_putstr_fd(data->filename, STDOUT_FILENO);
+		if (data->objname)
+		{
+			write(STDOUT_FILENO, "(", 1);
+			ft_putstr_fd(data->objname, STDOUT_FILENO);
+			write(STDOUT_FILENO, ")", 1);
+		}
+		write(STDOUT_FILENO, ":\n", 2);
 	}
-	write(STDOUT_FILENO, ":\n", 2);
 	write(STDOUT_FILENO, "Contents of (", 13);
 	ft_putstr_fd(data->segment, STDOUT_FILENO);
 	write(STDOUT_FILENO, ",", 1);
@@ -73,7 +103,7 @@ static void		print_header(t_nm_otool *data)
 }
 
 int				ft_otool_print_section(t_nm_otool *data, t_freader *reader,
-					uint8_t *start)
+					uint8_t *start, int is_ppc)
 {
 	size_t	i;
 
@@ -84,7 +114,10 @@ int				ft_otool_print_section(t_nm_otool *data, t_freader *reader,
 		if (binary_is_corrupt(data, start + i +
 				(reader->text_offset & MASK_64_BITS), 16))
 			return (corruption_error(data, "Section, Segment\n"));
-		putline(data, reader, start, i);
+		if (is_ppc == 0)
+			putline(data, reader, start, i);
+		else
+			putline_ppc(data, reader, start, i);
 		if (data->opts & SHOW_CHARACTERS)
 		{
 			write(STDOUT_FILENO, " ", 1);

@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:29:24 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/05/24 14:30:07 by fjacquem         ###   ########.fr       */
+/*   Updated: 2018/09/12 17:12:28 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int			ft_otool_macho32(t_nm_otool *data, uint8_t *buf)
 		reader.size_load_commands = *(uint32_t*)(buf + 0x14);
 		if (get_section_32(data, buf + 0x1C, &reader) != 0)
 			return (1);
-		ft_otool_print_section(data, &reader, buf);
+		ft_otool_print_section(data, &reader, buf, 0);
 	}
 	return (0);
 }
