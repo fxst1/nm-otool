@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:34:30 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/01 13:50:56 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 15:13:53 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ int					load_file(t_nm_otool *data)
 	if (fstat(fd, &st) == -1)
 		return (error(fd, "stat", data->filename));
 	data->buffer_size = st.st_size;
-	data->buffer = (uint8_t*)malloc(st.st_size);
+	data->buffer = (uint8_t*)mmap(NULL, st.st_size,
+							PROT_READ,
+							MAP_PRIVATE | MAP_FILE,
+							fd,
+							0);
 	if (data->buffer == NULL || data->buffer == MAP_FAILED)
 		return (error(fd, "allocate buffer", NULL));
-	else if (read(fd, data->buffer, data->buffer_size) < 0)
-		return (error(fd, "read", data->filename));
 	close(fd);
 	return (0);
 }

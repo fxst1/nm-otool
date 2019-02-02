@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:13:09 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/12 17:42:28 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 19:26:18 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int			print_objects(t_nm_otool *data, t_list *objs,
 			data->objname = (char*)start + o->offset + 0x3C;
 			if ((err = ft_otool(data, start + o->offset + 0x3C + size_name)))
 				return (1);
+			data->objname = NULL;
 		}
 		value = (uintptr_t)start + o->offset + 0x3C + size_name;
 		free(o);

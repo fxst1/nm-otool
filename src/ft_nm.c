@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:12:21 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 22:44:45 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 16:03:54 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 void			ft_nm_print(t_nm_otool *data)
 {
+	if (data->show_filename)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		ft_putstr(data->filename);
+		write(STDOUT_FILENO, ":\n", 2);
+	}
 	if (data->opts == 0)
 		ft_lstiter2(data->symbols, &iter_symbols_default,
 			(void*)(uintptr_t)data->nbits);

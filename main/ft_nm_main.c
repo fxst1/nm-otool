@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/09/01 13:54:43 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 16:30:48 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,34 @@ static int		parse_option(t_nm_otool *data, char *opt)
 
 static void		nm_process(t_nm_otool *data)
 {
+	data->buffer = NULL;
 	data->print = 1;
 	if (load_file(data) != 0)
-		write(2, "nm: error\n", 10);
+		write(STDERR_FILENO, "error\n", 6);
 	else
 		ft_nm(data, data->buffer);
-	free(data->buffer);
+	if (data->buffer != NULL)
+		munmap(data->buffer, data->buffer_size);
 }
 
 static void		nm_all_files(t_nm_otool *data, char **argv)
 {
+	char		**tmp;
+
+	tmp = argv;
 	if (!*argv)
 	{
+		data->show_filename = 0;
 		data->filename = "a.out";
 		nm_process(data);
 	}
 	else
 		while (*argv)
 		{
+			if (*(argv + 1) == NULL && tmp == argv)
+				data->show_filename = 0;
+			else
+				data->show_filename = 1;
 			data->filename = *argv;
 			nm_process(data);
 			argv++;

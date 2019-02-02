@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:28:52 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 20:18:59 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 17:54:22 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int				ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap)
 	n_arch = swap ? ft_swap_bytes(*((uint32_t*)buf + 1)) :
 						*((uint32_t*)buf + 1);
 	tmp = buf + 8;
+	data->show_filename = 0;
 	while (i < n_arch && i < 1024)
 	{
 		if (binary_is_corrupt(data, tmp, 20))
@@ -88,5 +89,6 @@ int				ft_nm_fat(t_nm_otool *data, uint8_t *buf, int swap)
 		tmp += 0x14;
 		i++;
 	}
+	data->show_filename = 1;
 	return (explore_archs(data, n_arch, buf, swap));
 }

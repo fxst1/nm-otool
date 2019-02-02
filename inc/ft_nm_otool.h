@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/12 18:47:27 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 14:49:35 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct			s_nm_otool
 {
 	int					nbits;
 	int					print;
+	int					show_filename;
 	int					swap_bytes;
 	char				*filename;
 	char				*objname;

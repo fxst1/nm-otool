@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:16:14 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 21:00:01 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 15:00:20 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int					ft_nm_ar(t_nm_otool *data, uint8_t *buf)
 
 	i = 0;
 	objs = NULL;
+	data->show_filename = 0;
 	if (binary_is_corrupt(data, buf + 0x4, 0x88))
 		return (corruption_error(data, "Symtab Header\n"));
 	size_name = get_size_name(buf + ARCH_SIGN_LEN);

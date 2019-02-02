@@ -6,7 +6,7 @@
 #    By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/08/11 17:14:40 by fjacquem          #+#    #+#              #
-#    Updated: 2018/09/01 14:20:36 by fjacquem         ###   ########.fr        #
+#    Updated: 2019/02/02 17:46:28 by fjacquem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,13 @@ INC = -I ./ -I ../
 CC = gcc
 HEAD_CPY = /usr/include/libft
 LIB_CPY = /usr/lib
+
+ifeq ($(ARCH),)
+	FLAGS += -arch x86_64
+else
+	FLAGS += -arch $(ARCH)
+	NAME = libft_$(ARCH).a
+endif
 
 SRC_ESS = ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c ft_memchr.c\
 	ft_memdel.c ft_memcmp.c ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c\

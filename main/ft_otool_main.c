@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 10:57:16 by fxst1             #+#    #+#             */
-/*   Updated: 2018/09/01 15:53:22 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 16:28:22 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int		parse_option(t_nm_otool *data, char *opt, char ***argv)
 			}
 			else if (*opt == '-')
 				break ;
-			else
+			else if (*opt != 't')
 				return (-1);
 			opt++;
 		}
@@ -60,6 +60,7 @@ static void		otool_process(t_nm_otool *data, char **argv)
 {
 	while (*argv)
 	{
+		data->buffer = NULL;
 		data->filename = *argv;
 		data->print = 1;
 		if (data->segment == NULL && data->section == NULL)
@@ -71,7 +72,8 @@ static void		otool_process(t_nm_otool *data, char **argv)
 			write(2, "otool: error\n", 13);
 		else
 			ft_otool(data, data->buffer);
-		free(data->buffer);
+		if (data->buffer != NULL)
+			munmap(data->buffer, data->buffer_size);
 		argv++;
 	}
 }

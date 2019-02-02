@@ -1,22 +1,26 @@
 #!/bin/bash
 
-echo "" > "./test.log"
-for file in $@
-do
-
-	echo $file;
-	./ft_otool $file > user 2> user_err && otool -t $file > ref 2> ref_err && diff user ref > tmp
+function	exec_test
+{
+	echo $1
+	./ft_otool $1 > user 2> user_err && otool -t $1 > ref 2> ref_err
+	diff user ref > /dev/null
 
 	#if diff is not empty
-	if [ -s tmp ]; then
+	if [ $? -ne 0 ]; then
 
-		echo $file >> "./test.log"
-		diff user ref >> "./test.log"
+		echo $file >> "./test_otool.log"
+		diff user ref >> "./test_otool.log"
 
-		#if there is an error	 from ft_nm
-		if [ -s user_err ]; then
+		#if there is an error from otool
+		if [ -s ref_err ]; then
 
-			echo -e "\x1B[38;5;3m====> WARNING\x1B[0m"
+			if [ -s user_err ]; then
+				echo -e "\x1B[38;5;3m====> DIFF (NO STDERR)\x1B[0m"
+			else
+				echo -e "\x1B[38;5;3m====> DIFF (output on STDERR)\x1B[0m"
+			fi
+
 			echo "= User error:"
 			cat user_err
 			echo "= Reference error:"
@@ -24,6 +28,7 @@ do
 
 		else
 			echo -e "\x1B[38;5;1m====> ERROR\x1B[0m"
+			exit;
 		fi
 
 	else
@@ -33,6 +38,23 @@ do
 	fi
 
 	echo ""
+}
 
-done
-rm -f tmp user user_err ref ref_err
+function	one_by_one
+{
+	echo "" > "./test_otool.log"
+	for file in $@
+	do
+		exec_test	$file
+	done
+}
+
+function	all
+{
+	echo "" > "./test_otool.log"
+	exec_test "$*"
+}
+
+all $@
+#one_by_one $@
+rm -f user user_err ref ref_err

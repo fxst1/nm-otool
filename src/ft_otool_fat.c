@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:28:41 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/12 17:32:04 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/02 19:18:46 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void		print_arch(t_nm_otool *data, uint32_t n_arch, uint32_t arch)
 {
-	if (n_arch == 1)
+	if (n_arch == CPU_TYPE_X86_64)
 	{
 		ft_putstr_fd(data->filename, STDOUT_FILENO);
 		write(STDOUT_FILENO, ":\n", 2);
