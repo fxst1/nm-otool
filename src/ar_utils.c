@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:15:24 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 22:45:03 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 18:01:03 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ int			read_object(t_nm_otool *data, uint8_t *buf, t_list **root)
 	ar_object.symbol = *(uint32_t*)(buf);
 	ar_object.offset = *(uint32_t*)(buf + 4);
 	if (!object_exist(*root, ar_object))
-		ft_lstadd_sort(root, ft_lstnew(&ar_object, sizeof(t_object)),
-						&compare_ar_symbols);
+		ft_lstadd(root, ft_lstnew(&ar_object, sizeof(t_object)));
 	return (0);
 }
 
@@ -81,8 +80,7 @@ int			append_unref_objects(t_nm_otool *data, uint8_t *buf, t_list **root)
 		buf += 0xC;
 		o.symbol = 0;
 		o.offset = (uint32_t)((buf - RANLIB_HEADER_SIZE) - data->buffer);
-		ft_lstadd_sort(root, ft_lstnew(&o, sizeof(t_object)),
-						&compare_ar_symbols);
+		ft_lstadd(root, ft_lstnew(&o, sizeof(t_object)));
 		buf += object_size;
 	}
 	return (0);

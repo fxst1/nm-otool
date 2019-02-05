@@ -6,11 +6,17 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:13:09 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/02 19:26:18 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 18:17:04 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
+
+static void			clear_object(t_list *objs)
+{
+	free(objs->content);
+	free(objs);
+}
 
 static int			print_objects(t_nm_otool *data, t_list *objs,
 						uint8_t *start)
@@ -36,8 +42,7 @@ static int			print_objects(t_nm_otool *data, t_list *objs,
 			data->objname = NULL;
 		}
 		value = (uintptr_t)start + o->offset + 0x3C + size_name;
-		free(o);
-		free(objs);
+		clear_object(objs);
 		objs = next;
 	}
 	return (err);
@@ -67,6 +72,6 @@ int					ft_otool_ar(t_nm_otool *data, uint8_t *buf)
 		return (1);
 	write(STDOUT_FILENO, "Archive : ", 10);
 	ft_putendl_fd(data->filename, STDOUT_FILENO);
-	print_objects(data, objs, data->buffer);
+	print_objects(data, ft_lstsort(&objs, compare_ar_symbols), data->buffer);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/02 14:49:35 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 19:14:08 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct			s_nm_otool
 	t_list				*symbols;
 	char				*section;
 	char				*segment;
+	char				printbuf[1024];
+	char				*printbufchar;
 }						t_nm_otool;
 
 /*
@@ -94,11 +96,15 @@ void					*ft_print_memory(const void *addr, size_t size);
 void					ft_putnbr_base_fd(int64_t nb, char *base, int fd);
 void					ft_putnbr_base_offset_fd(int64_t nb, char *base,
 							size_t offset, int fd);
+void					ft_putnbr_base_buffer(int64_t nb, char *base,
+							char **buffer);
+void					ft_putnbr_base_offset_buffer(int64_t nb, char *base,
+							size_t offset, char **buffer);
 unsigned int			ft_swap_bytes(unsigned int bytes);
 void					ft_lstiter2(t_list *lst, void (*fct)(void*, t_list*),
 							void *data);
-void					ft_lstadd_sort(t_list **root, t_list *add,
-							int (*cmp)(void*, void*));
+t_list					*ft_lstrev(t_list **root);
+t_list					*ft_lstadvance(t_list *lst, size_t n);
 
 /*
 **	Symbols

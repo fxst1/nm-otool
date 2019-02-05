@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:16:14 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/02 15:00:20 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 18:00:58 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int					ft_nm_ar(t_nm_otool *data, uint8_t *buf)
 	reader.strtab_offset = reader.symtab_offset + symbol_size;
 	if (append_unref_objects(data, buf + reader.strtab_offset, &objs))
 		return (1);
+	ft_lstsort(&objs, compare_ar_symbols);
 	print_objects(data, objs, data->buffer);
 	return (0);
 }

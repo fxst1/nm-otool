@@ -6,7 +6,7 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2019/02/02 18:05:36 by fjacquem         ###   ########.fr        #
+#    Updated: 2019/02/05 18:35:46 by fjacquem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
@@ -35,10 +35,10 @@ endif
 
 all: $(NM) $(OTOOL)
 
-$(NM) : $(LIBFT) $(OBJ_NM)
+$(NM) : $(LIBFT)  $(OBJ_NM)
 	$(CC) $(FLAGS) $(INC) -o $(NM) $(OBJ_NM) -L ./libft/ -lft
 
-$(OTOOL) : $(LIBFT) $(OBJ_OTOOL)
+$(OTOOL) : $(LIBFT)  $(OBJ_OTOOL)
 	$(CC) $(FLAGS) $(INC) -o $(OTOOL) $(OBJ_OTOOL) -L ./libft/ -lft
 
 $(OBJDIR)%.o: %.c
@@ -53,13 +53,12 @@ all-arch:
 	make all ARCH=i386
 
 clean:
-	@rm -rf $(OBJDIR)
+	make -C libft clean
+	@rm -rf $(OBJDIR) ref ref_err user user_err test_nm.log test_otool.log
 
-cleanlib:
+fclean:
 	make -C libft fclean
-
-fclean: cleanlib
-	@rm -rf $(OBJDIR)
+	@rm -rf $(OBJDIR) ref ref_err user user_err test_nm.log test_otool.log
 	@rm -rf $(NM)
 	@rm -rf $(OTOOL)
 

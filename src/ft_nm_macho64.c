@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:07:26 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 22:25:29 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 16:16:53 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int				load_symbols_64(t_nm_otool *data, t_freader *reader,
 				!= 0)
 			return (corruption_error(data, "section index not found\n"));
 		if (!(s.type & N_STAB))
-			ft_lstadd_sort(&data->symbols, ft_lstnew(&s, sizeof(s)),
-			&compare_symbols);
+			ft_lstadd(&data->symbols, ft_lstnew(&s, sizeof(s)));
 		buf += 0x10;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:33:23 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/02 19:20:06 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 19:17:42 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,24 @@ static void		putline(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 	size_t		j;
 
 	j = 0;
-	ft_putnbr_base_offset_fd(reader->text_addr + i, BASE_HEX, data->nbits,
-		STDOUT_FILENO);
-	write(STDOUT_FILENO, "\t", 1);
+	ft_putnbr_base_offset_buffer(reader->text_addr + i, BASE_HEX, data->nbits,
+		&data->printbufchar);
+	*(data->printbufchar++) = '\t';
 	while (j < 16 && i + j < reader->text_size)
 	{
 		if (buf[(reader->text_offset & MASK_64_BITS) + i + j] <= 0xf)
-			ft_putstr_fd("0", STDOUT_FILENO);
-		ft_putnbr_base_fd(buf[(reader->text_offset & MASK_64_BITS) + i + j],
-			BASE_HEX, STDOUT_FILENO);
-		write(STDOUT_FILENO, " ", 1);
+			*(data->printbufchar++) = '0';
+		ft_putnbr_base_buffer(buf[(reader->text_offset & MASK_64_BITS) + i + j],
+			BASE_HEX, &data->printbufchar);
+		*(data->printbufchar++) = ' ';
 		j++;
 	}
 	if (data->opts & SHOW_CHARACTERS)
 		while (j < 16)
 		{
-			write(STDOUT_FILENO, "   ", 3);
+			*(data->printbufchar++) = ' ';
+			*(data->printbufchar++) = ' ';
+			*(data->printbufchar++) = ' ';
 			j++;
 		}
 }
@@ -44,23 +46,25 @@ static void		putline_ppc(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 	size_t		j;
 
 	j = 0;
-	ft_putnbr_base_offset_fd(reader->text_addr + i, BASE_HEX, data->nbits,
-		STDOUT_FILENO);
-	write(STDOUT_FILENO, "\t", 1);
+	ft_putnbr_base_offset_buffer(reader->text_addr + i, BASE_HEX, data->nbits,
+		&data->printbufchar);
+	*(data->printbufchar++) = '\t';
 	while (j < 16 && i + j < reader->text_size)
 	{
 		if (buf[(reader->text_offset & MASK_64_BITS) + i + j] <= 0xf)
-			ft_putstr_fd("0", STDOUT_FILENO);
-		ft_putnbr_base_fd(buf[(reader->text_offset & MASK_64_BITS) + i + j],
-			BASE_HEX, STDOUT_FILENO);
+			*(data->printbufchar++) = '0';
+		ft_putnbr_base_buffer(buf[(reader->text_offset & MASK_64_BITS) + i + j],
+			BASE_HEX, &data->printbufchar);
 		if (j % 4 == 3)
-			write(STDOUT_FILENO, " ", 1);
+			*(data->printbufchar++) = ' ';
 		j++;
 	}
 	if (data->opts & SHOW_CHARACTERS)
 		while (j < 16)
 		{
-			write(STDOUT_FILENO, "   ", 3);
+			*(data->printbufchar++) = ' ';
+			*(data->printbufchar++) = ' ';
+			*(data->printbufchar++) = ' ';
 			j++;
 		}
 }
@@ -74,12 +78,11 @@ static void		putchars(t_nm_otool *data, t_freader *reader, uint8_t *buf,
 	while (j < 16 && i + j < reader->text_size)
 	{
 		if (ft_isprint(buf[reader->text_offset + i + j]))
-			write(STDOUT_FILENO, &buf[reader->text_offset + i + j], 1);
+			*(data->printbufchar++) = buf[reader->text_offset + i + j];
 		else
-			write(STDOUT_FILENO, ".", 1);
+			*(data->printbufchar++) = '.';
 		j++;
 	}
-	(void)data;
 }
 
 static void		print_header(t_nm_otool *data)
@@ -111,6 +114,8 @@ int				ft_otool_print_section(t_nm_otool *data, t_freader *reader,
 	print_header(data);
 	while (i < reader->text_size)
 	{
+		ft_bzero(data->printbuf, 1024);
+		data->printbufchar = &data->printbuf[0];
 		if (binary_is_corrupt(data, start + i +
 				(reader->text_offset & MASK_64_BITS), 16))
 			return (corruption_error(data, "Section, Segment\n"));
@@ -120,10 +125,10 @@ int				ft_otool_print_section(t_nm_otool *data, t_freader *reader,
 			putline_ppc(data, reader, start, i);
 		if (data->opts & SHOW_CHARACTERS)
 		{
-			write(STDOUT_FILENO, " ", 1);
+			*(data->printbufchar++) = ' ';
 			putchars(data, reader, start, i);
 		}
-		write(STDOUT_FILENO, "\n", 1);
+		ft_putendl_fd(data->printbuf, STDOUT_FILENO);
 		i += 16;
 	}
 	return (0);

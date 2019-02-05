@@ -28,7 +28,7 @@ function	exec_test
 
 		else
 			echo -e "\x1B[38;5;1m====> ERROR\x1B[0m"
-			exit;
+			#exit;
 		fi
 
 	else
@@ -55,6 +55,6 @@ function	all
 	exec_test "$*"
 }
 
-all $@
-#one_by_one $@
+#all $@
+one_by_one $@
 rm -f user user_err ref ref_err

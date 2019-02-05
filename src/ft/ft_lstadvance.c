@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_lstadvance.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/24 13:09:55 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/05 17:18:22 by fjacquem         ###   ########.fr       */
+/*   Created: 2019/02/05 18:05:19 by fjacquem          #+#    #+#             */
+/*   Updated: 2019/02/05 18:08:55 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list **alst, void (*del)(void *, size_t))
+t_list		*ft_lstadvance(t_list *lst, size_t n)
 {
-	if (del)
-		(*del)((*alst)->content, (*alst)->content_size);
-	ft_memdel((void**)alst);
+	size_t		index;
+
+	index = 0;
+	while (lst && index < n)
+	{
+		lst = lst->next;
+		index++;
+	}
+	return (lst);
 }

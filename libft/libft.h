@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fjacquem <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 15:40:07 by fjacquem          #+#    #+#             */
-/*   Updated: 2015/11/23 16:30:47 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 18:02:53 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_mergesort
+{
+	t_list			*left;
+	t_list			*right;
+	t_list			*src;
+	t_list			*src_advance;
+	int				(*cmp)(void*, void*);
+}					t_mergesort;
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -80,9 +89,11 @@ void				ft_putstr_fd(const char *str, int fd);
 void				ft_putendl_fd(const char *str, int fd);
 void				ft_putnbr_fd(int n, int fd);
 t_list				*ft_lstnew(void const *content, size_t content_size);
+t_list				*ft_lstnew_noalloc(void *cnt, size_t cnt_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_list				*ft_lstsort(t_list **lst, int (*cmp)(void*, void*));
 #endif

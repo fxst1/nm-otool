@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:30:04 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 14:14:39 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 16:16:16 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ int				load_symbols_ppc(t_nm_otool *data, t_freader *reader,
 		get_seg_sect_name_ppc(start, sect_index, &s, reader->n_load_commands)
 				!= 0)
 			return (corruption_error(data, "Section index not found\n"));
-		ft_lstadd_sort(&data->symbols, ft_lstnew(&s, sizeof(s)),
-			&compare_symbols);
+		ft_lstadd(&data->symbols, ft_lstnew(&s, sizeof(s)));
 		buf += 0xC;
 		i++;
 	}
