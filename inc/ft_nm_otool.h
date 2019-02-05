@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:02:28 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/05 19:14:08 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 21:02:30 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ typedef struct			s_nm_otool
 	t_list				*symbols;
 	char				*section;
 	char				*segment;
-	char				printbuf[1024];
-	char				*printbufchar;
+	t_printerbuffered	pbuf;
 }						t_nm_otool;
 
 /*
@@ -97,9 +96,9 @@ void					ft_putnbr_base_fd(int64_t nb, char *base, int fd);
 void					ft_putnbr_base_offset_fd(int64_t nb, char *base,
 							size_t offset, int fd);
 void					ft_putnbr_base_buffer(int64_t nb, char *base,
-							char **buffer);
+							t_printerbuffered *buffer);
 void					ft_putnbr_base_offset_buffer(int64_t nb, char *base,
-							size_t offset, char **buffer);
+							size_t offset, t_printerbuffered *buffer);
 unsigned int			ft_swap_bytes(unsigned int bytes);
 void					ft_lstiter2(t_list *lst, void (*fct)(void*, t_list*),
 							void *data);
@@ -147,6 +146,19 @@ int						ft_otool_print_section(t_nm_otool *data,
 							t_freader *reader, uint8_t *start, int is_ppc);
 
 /*
+**	Printers
+*/
+void					ft_printerinit(t_printerbuffered *pbuf, int fd,
+							size_t allocsize, size_t flushsize);
+void					ft_printerwrite(t_printerbuffered *pbuf,
+							const void *buf, size_t buf_size);
+void					ft_printerwrite_str(t_printerbuffered *pbuf,
+							const char *buf);
+void					ft_printerflush(t_printerbuffered *pbuf);
+void					ft_printerclose(t_printerbuffered *pbuf);
+void					ft_printerclose_flush(t_printerbuffered *pbuf);
+
+/*
 **	Achive helpers
 */
 int						compare_ar_symbols(void *p1, void *p2);
@@ -160,6 +172,9 @@ int						append_unref_objects(t_nm_otool *data, uint8_t *buf,
 **	Errors
 */
 int						display_error(t_nm_otool *data, const int errtype,
+							const char *errmsg);
+int						display_error_stdout(t_nm_otool *data,
+							const int errtype,
 							const char *errmsg);
 int						corruption_error(t_nm_otool *data, const char *errmsg);
 int						binary_strtab_corrupt(t_nm_otool *data, char *addr);

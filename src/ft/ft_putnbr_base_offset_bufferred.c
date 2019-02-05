@@ -6,14 +6,14 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 19:01:47 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/05 19:21:18 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 21:23:16 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm_otool.h"
 
 static void		ft_putnbr_base_buffer2(int64_t nb, char *base, size_t length,
-				char **buffer)
+				t_printerbuffered *buffer)
 {
 	if (length > 0)
 	{
@@ -23,11 +23,12 @@ static void		ft_putnbr_base_buffer2(int64_t nb, char *base, size_t length,
 			ft_putnbr_base_buffer2(nb % length, base, length, buffer);
 		}
 		else
-			*((*buffer)++) = base[nb];
+			ft_printerwrite(buffer, &base[nb], 1);
 	}
 }
 
-void			ft_putnbr_base_buffer(int64_t nb, char *base, char **buffer)
+void			ft_putnbr_base_buffer(int64_t nb, char *base,
+					t_printerbuffered *buffer)
 {
 	ft_putnbr_base_buffer2(nb, base, ft_strlen(base), buffer);
 }
@@ -48,7 +49,7 @@ static size_t	getoffset(int64_t nb, char *base, size_t length, size_t *n)
 }
 
 void			ft_putnbr_base_offset_buffer(int64_t nb, char *base,
-					size_t offset, char **buffer)
+					size_t offset, t_printerbuffered *buffer)
 {
 	size_t		tmp;
 	size_t		length;
@@ -58,7 +59,7 @@ void			ft_putnbr_base_offset_buffer(int64_t nb, char *base,
 	getoffset(nb, base, length, &tmp);
 	while (tmp < offset)
 	{
-		*((*buffer)++) = '0';
+		ft_printerwrite(buffer, "0", 1);
 		tmp++;
 	}
 	ft_putnbr_base_buffer2(nb, base, length, buffer);

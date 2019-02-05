@@ -6,11 +6,11 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2019/02/05 18:35:46 by fjacquem         ###   ########.fr        #
+#    Updated: 2019/02/05 21:25:45 by fjacquem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 INC = -I inc/ -I libft/
 LIBFT = ./libft/libft.a
 OBJDIR = ./obj/

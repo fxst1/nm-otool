@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 15:40:07 by fjacquem          #+#    #+#             */
-/*   Updated: 2019/02/05 18:02:53 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 20:49:16 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ typedef struct		s_mergesort
 	t_list			*src_advance;
 	int				(*cmp)(void*, void*);
 }					t_mergesort;
+
+typedef struct		s_printerbuffered
+{
+	int				fd;
+	char			*origin;
+	char			*pointer;
+	size_t			allocsize;
+	size_t			usedsize;
+	size_t			flushsize;
+}					t_printerbuffered;
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);

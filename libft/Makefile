@@ -6,7 +6,7 @@
 #    By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/08/11 17:14:40 by fjacquem          #+#    #+#              #
-#    Updated: 2019/02/05 15:55:22 by fjacquem         ###   ########.fr        #
+#    Updated: 2019/02/05 20:48:41 by fjacquem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ HEAD_STACK = stack.h
 SRC_BTREE = ft_btreenew.c ft_btreeadd.c ft_btreefree.c ft_btreeforeach.c
 HEAD_BTREE = btree.h
 
-SRC_FCT = ft_lstnew_noalloc.c \
+SRC_FCT = ft_lstnew_noalloc.c\
 	ft_lstfree.c ft_lstsize.c ft_lstadd_begin.c\
 	ft_isspace.c ft_memndel.c\
 	ft_strsort.c ft_strcut.c \

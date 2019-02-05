@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:30:59 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/12 16:51:11 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 20:24:43 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int		parse_magic(t_nm_otool *data, uint8_t *buf, uint32_t magic)
 		return (ft_otool_ar(data, buf));
 	}
 	else
-		display_error(data, -1, "Undefined magic number\n");
+		display_error_stdout(data, -1, "is not an object file\n");
 	return (1);
 }
 

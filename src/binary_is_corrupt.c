@@ -6,7 +6,7 @@
 /*   By: fjacquem <fjacquem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:15:51 by fjacquem          #+#    #+#             */
-/*   Updated: 2018/09/10 15:46:25 by fjacquem         ###   ########.fr       */
+/*   Updated: 2019/02/05 20:04:11 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@ int			display_error(t_nm_otool *data, const int errtype,
 	if (errtype == ERR_CORRUPT_FILE)
 		ft_putstr_fd("Corrupt file: ", STDERR_FILENO);
 	ft_putstr_fd(errmsg, STDERR_FILENO);
+	return (1);
+}
+
+int			display_error_stdout(t_nm_otool *data, const int errtype,
+				const char *errmsg)
+{
+	ft_putstr_fd(data->filename, STDOUT_FILENO);
+	ft_putstr_fd(": ", STDOUT_FILENO);
+	if (errtype == ERR_CORRUPT_FILE)
+		ft_putstr_fd("Corrupt file: ", STDOUT_FILENO);
+	ft_putstr_fd(errmsg, STDOUT_FILENO);
 	return (1);
 }
 
